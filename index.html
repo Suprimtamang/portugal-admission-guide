@@ -4,95 +4,122 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portugal University Guide | National Student Pathway</title>
-    
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
-            color: #1e293b;
-        }
-
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
         .step-active { border-left: 4px solid #3b82f6; background-color: #eff6ff; }
         .step-inactive { border-left: 4px solid #e2e8f0; }
-
-        .checklist-item input:checked + span {
-            text-decoration: line-through;
-            color: #94a3b8;
-        }
-
-        canvas#victory-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none; /* Fixed: Allows clicking buttons through the animation */
-            z-index: 100;
-            display: none;
-        }
-
-        /* 3D Flipping Button Styles */
-        .flip-container {
-            perspective: 1000px;
-            width: 180px;
-            height: 36px;
-        }
-        .flip-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            transform-style: preserve-3d;
-            cursor: pointer;
-        }
-        .flip-container:hover .flip-inner {
-            transform: rotateY(180deg);
-        }
-        .flip-front, .flip-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            font-size: 10px;
-            font-weight: 800;
-            text-transform: uppercase;
-            border: 1px solid #bfdbfe;
-        }
-        .flip-front { background-color: #eff6ff; color: #2563eb; }
-        .flip-back { background-color: #2563eb; color: white; transform: rotateY(180deg); font-size: 8px; text-transform: none; }
-
-        .custom-card {
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-            background: white;
-            border-radius: 1rem;
-            border: 1px solid #f1f5f9;
-        }
-
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .checklist-item input:checked + span { text-decoration: line-through; color: #94a3b8; }
+        canvas#victory-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 100; display: none; }
+        .custom-card { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05); background: white; border-radius: 1rem; border: 1px solid #f1f5f9; }
+        .scroll-mt-header { scroll-margin-top: 100px; }
     </style>
 </head>
-<body class="antialiased min-h-svh flex flex-col md:h-screen md:overflow-hidden">
+<body class="antialiased min-h-screen flex flex-col md:h-screen md:overflow-hidden">
 
     <canvas id="victory-canvas"></canvas>
 
-    <header class="bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center z-20 shadow-sm">
+    <header class="sticky top-0 bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center z-30 shadow-sm">
         <div class="flex items-center space-x-3">
             <span class="text-3xl">🇵🇹</span>
             <div>
                 <h1 class="text-lg font-extrabold text-slate-900 leading-tight">Portugal Admission Roadmap</h1>
-                <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">National Student Pathway (Immigrant Focus)</p>
+                <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Immigrant Focus</p>
             </div>
+        </div>
+        <a href="mailto:s.tamang@campus.fct.unl.pt" class="text-[10px] bg-blue-50 text-blue-600 px-2 py-1 rounded border border-blue-100 font-bold sm:hidden">EMAIL ME</a>
+        <div class="flip-container hidden sm:block w-40 h-8">
+             <a href="mailto:s.tamang@campus.fct.unl.pt" class="text-[10px] font-bold text-blue-600">s.tamang@campus.fct.unl.pt</a>
+        </div>
+    </header>
+
+    <main class="flex-1 flex flex-col md:flex-row max-w-screen-2xl mx-auto w-full md:overflow-hidden">
+        
+        <nav class="w-full md:w-80 bg-slate-50 border-r border-slate-100 p-6 space-y-6 shrink-0">
+            <div>
+                <h2 class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-4">Steps to Success</h2>
+                <div id="roadmap-container" class="space-y-2"></div>
+            </div>
+            <div class="pt-6 border-t border-slate-200">
+                <h2 class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-4">Quick Links</h2>
+                <div class="grid grid-cols-1 gap-2">
+                    <a href="https://www.dges.gov.pt/pt/pagina/be-com" target="_blank" class="p-2 bg-blue-600 text-white rounded-lg text-[10px] font-bold text-center">🎫 e-balcão</a>
+                </div>
+            </div>
+        </nav>
+
+        <section id="content-section" class="flex-1 bg-white p-6 md:p-12 relative overflow-y-auto scroll-mt-header">
+            <div class="max-w-2xl mx-auto" id="detail-pane">
+                <div class="md:hidden text-center py-10">
+                    <p class="text-slate-400 animate-bounce">↑ Select a step to begin</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const storageKey = 'immigrant_admission_progress_v4';
+        let userProgress = JSON.parse(localStorage.getItem(storageKey)) || {};
+
+        function saveProgress(id, checked) {
+            userProgress[id] = checked;
+            localStorage.setItem(storageKey, JSON.stringify(userProgress));
+        }
+
+        const roadmapSteps = [
+            { id: 'eligibility', title: "0. Eligibility Wizard", icon: "⚖️", summary: "Can you apply as a National?", intro: "Let's check if you qualify as a National Student.", content: `<div class="p-6 bg-slate-900 text-white rounded-2xl"><div class="space-y-4 text-sm"><label class="flex items-start gap-3"><input type="checkbox" id="rule1" class="mt-1" onchange="toggleWizard()"> Resided in PT > 2 years.</label><div id="wizard-result" class="hidden p-4 bg-emerald-500/20 border border-emerald-500/30 rounded-xl text-emerald-100 font-bold">✅ Likely ELIGIBLE!</div></div></div>` },
+            { id: 'attestation', title: "1. Document Attestation", icon: "📄", summary: "Legalizing Certificates", intro: "Your certificates must be legalized correctly.", content: `<div class="custom-card p-6"><div class="space-y-3">${['Grade 10/12 Certs', 'MFA Attestation', 'Embassy Stamp', 'Translations'].map((item, i) => `<label class="flex items-center gap-3 p-3 bg-slate-50 rounded-xl"><input type="checkbox" onchange="saveProgress('s1_${i}', this.checked)" ${userProgress['s1_'+i]?'checked':''}> <span class="text-sm">${item}</span></label>`).join('')}</div></div>` },
+            { id: 'equivalency', title: "2. Equivalency Stage", icon: "🏫", summary: "School Visit", intro: "Convert your GPA at a public school.", content: `<div class="p-5 bg-blue-50 border border-blue-100 rounded-2xl"><address class="not-italic text-sm font-bold">Agrupamento de Escolas das Laranjeiras</address></div>` },
+            { id: 'substitution', title: "3. Exam Substitution", icon: "🔁", summary: "Artigo 20-A", intro: "Substitute exams with home results.", content: `<div class="bg-slate-900 p-6 rounded-3xl text-white"><div class="text-[11px] font-mono text-slate-300 bg-slate-800 p-4 rounded-xl" id="mail-text">Assunto: Pedido de substituição...</div></div>` },
+            { id: 'gaes', title: "4. Password & GAES", icon: "🔑", summary: "Identity", intro: "Visit GAES in early July.", content: `<div class="p-4 bg-blue-50 border rounded-xl text-[11px]">Request Internal Number if no Citizen Card.</div>` },
+            { id: 'finish', title: "5. Final Application", icon: "🎉", summary: "Success", intro: "Submit your choices!", content: `<div class="text-center py-10"><button onclick="launchCelebration()" class="w-full py-4 bg-emerald-500 text-white rounded-2xl font-extrabold">CELEBRATE SUCCESS ✨</button></div>` }
+        ];
+
+        let currentActiveIdx = 0;
+
+        function renderSidebar() {
+            document.getElementById('roadmap-container').innerHTML = roadmapSteps.map((s, i) => `
+                <div onclick="renderStep(${i})" class="p-4 rounded-2xl cursor-pointer ${currentActiveIdx === i ? 'step-active shadow-sm' : 'step-inactive'}">
+                    <div class="flex items-center gap-4"><span class="text-2xl">${s.icon}</span><div><h3 class="text-[11px] font-extrabold">${s.title}</h3></div></div>
+                </div>`).join('');
+        }
+
+        function renderStep(idx) {
+            currentActiveIdx = idx; 
+            renderSidebar();
+            const s = roadmapSteps[idx];
+            const pane = document.getElementById('detail-pane');
+            
+            pane.innerHTML = `<div class="animate-in fade-in slide-in-from-bottom-6 duration-500"><h2 class="text-3xl font-black text-slate-900 mb-4">${s.title}</h2><p class="text-slate-500 mb-8">${s.intro}</p>${s.content}<div class="mt-16 flex justify-between"><button onclick="renderStep(${idx-1})" class="text-sm font-bold text-slate-400 ${idx===0?'invisible':''}">← Back</button><button onclick="renderStep(${idx+1})" class="px-8 py-3 bg-slate-900 text-white rounded-xl font-bold text-sm ${idx===roadmapSteps.length-1?'invisible':''}">Next Step →</button></div></div>`;
+            
+            // CRITICAL FIX: Automatically scroll to the content on mobile
+            if (window.innerWidth < 768) {
+                document.getElementById('content-section').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function toggleWizard() { 
+            const show = document.getElementById('rule1').checked;
+            document.getElementById('wizard-result').classList.toggle('hidden', !show);
+        }
+
+        function launchCelebration() {
+            const canvas = document.getElementById('victory-canvas');
+            canvas.style.display = 'block';
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            let particles = [];
+            for (let i = 0; i < 100; i++) particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 5 + 2, color: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'][Math.floor(Math.random()*4)], speed: Math.random() * 3 + 1 });
+            function draw() { ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p => { p.y += p.speed; ctx.fillStyle = p.color; ctx.fillRect(p.x, p.y, p.size, p.size); if(p.y > canvas.height) p.y = -20; }); requestAnimationFrame(draw); }
+            draw(); setTimeout(() => canvas.style.display = 'none', 5000);
+        }
+
+        window.onload = () => { renderSidebar(); };
+    </script>
+</body>
+</html>            </div>
         </div>
         
         <div class="flip-container hidden sm:block">
