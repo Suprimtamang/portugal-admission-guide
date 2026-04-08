@@ -28,31 +28,29 @@
                 <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Immigrant Focus</p>
             </div>
         </div>
-        <a href="mailto:s.tamang@campus.fct.unl.pt" class="text-[10px] bg-blue-50 text-blue-600 px-2 py-1 rounded border border-blue-100 font-bold sm:hidden">EMAIL ME</a>
-        <div class="flip-container hidden sm:block w-40 h-8">
-             <a href="mailto:s.tamang@campus.fct.unl.pt" class="text-[10px] font-bold text-blue-600">s.tamang@campus.fct.unl.pt</a>
-        </div>
+        <a href="mailto:s.tamang@campus.fct.unl.pt" class="text-[10px] bg-blue-50 text-blue-600 px-3 py-1 rounded border border-blue-100 font-bold hover:bg-blue-100 transition">WHEN IN DOUBT EMAIL ME 👀:</a>
     </header>
 
     <main class="flex-1 flex flex-col md:flex-row max-w-screen-2xl mx-auto w-full md:overflow-hidden">
         
-        <nav class="w-full md:w-80 bg-slate-50 border-r border-slate-100 p-6 space-y-6 shrink-0">
+        <nav class="w-full md:w-80 bg-slate-50 border-r border-slate-100 p-6 space-y-6 shrink-0 md:overflow-y-auto">
             <div>
-                <h2 class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-4">Steps to Success</h2>
+                <h2 class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-4">Steps to your dream uni 🎓</h2>
                 <div id="roadmap-container" class="space-y-2"></div>
             </div>
             <div class="pt-6 border-t border-slate-200">
-                <h2 class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-4">Quick Links</h2>
-                <div class="grid grid-cols-1 gap-2">
-                    <a href="https://www.dges.gov.pt/pt/pagina/be-com" target="_blank" class="p-2 bg-blue-600 text-white rounded-lg text-[10px] font-bold text-center">🎫 e-balcão</a>
+                <h2 class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-4">Support & Tickets</h2>
+                <div class="grid grid-cols-1 gap-3">
+                    <a href="https://www.dges.gov.pt/pt/pagina/be-com" target="_blank" class="block p-3 bg-blue-600 text-white rounded-xl text-xs font-bold text-center hover:bg-blue-700 shadow-md transition">🎫 DGES e-balcão (BE-COM)</a>
+                    <a href="https://www.dges.gov.pt/pt/pagina/calendario-concurso-nacional-de-acesso-0?plid=593" target="_blank" class="block p-3 bg-white rounded-xl border border-slate-200 text-xs font-bold hover:border-blue-500 transition shadow-sm">📅 Access Calendar</a>
                 </div>
             </div>
         </nav>
 
         <section id="content-section" class="flex-1 bg-white p-6 md:p-12 relative overflow-y-auto scroll-mt-header">
             <div class="max-w-2xl mx-auto" id="detail-pane">
-                <div class="md:hidden text-center py-10">
-                    <p class="text-slate-400 animate-bounce">↑ Select a step to begin</p>
+                <div class="text-center py-20">
+                    <p class="text-slate-400 font-medium animate-pulse">Select a step from the sidebar to begin your journey.</p>
                 </div>
             </div>
         </section>
@@ -69,30 +67,53 @@
         }
 
         const roadmapSteps = [
-            { id: 'eligibility', title: "0. Eligibility Wizard", icon: "⚖️", summary: "Can you apply as a National?", intro: "Let's check if you qualify as a National Student.", content: `<div class="p-6 bg-slate-900 text-white rounded-2xl"><div class="space-y-4 text-sm"><label class="flex items-start gap-3"><input type="checkbox" id="rule1" class="mt-1" onchange="toggleWizard()"> Resided in PT > 2 years.</label><div id="wizard-result" class="hidden p-4 bg-emerald-500/20 border border-emerald-500/30 rounded-xl text-emerald-100 font-bold">✅ Likely ELIGIBLE!</div></div></div>` },
-            { id: 'attestation', title: "1. Document Attestation", icon: "📄", summary: "Legalizing Certificates", intro: "Your certificates must be legalized correctly.", content: `<div class="custom-card p-6"><div class="space-y-3">${['Grade 10/12 Certs', 'MFA Attestation', 'Embassy Stamp', 'Translations'].map((item, i) => `<label class="flex items-center gap-3 p-3 bg-slate-50 rounded-xl"><input type="checkbox" onchange="saveProgress('s1_${i}', this.checked)" ${userProgress['s1_'+i]?'checked':''}> <span class="text-sm">${item}</span></label>`).join('')}</div></div>` },
-            { id: 'equivalency', title: "2. Equivalency Stage", icon: "🏫", summary: "School Visit", intro: "Convert your GPA at a public school.", content: `<div class="p-5 bg-blue-50 border border-blue-100 rounded-2xl"><address class="not-italic text-sm font-bold">Agrupamento de Escolas das Laranjeiras</address></div>` },
-            { id: 'substitution', title: "3. Exam Substitution", icon: "🔁", summary: "Artigo 20-A", intro: "Substitute exams with home results.", content: `<div class="bg-slate-900 p-6 rounded-3xl text-white"><div class="text-[11px] font-mono text-slate-300 bg-slate-800 p-4 rounded-xl" id="mail-text">Assunto: Pedido de substituição...</div></div>` },
-            { id: 'gaes', title: "4. Password & GAES", icon: "🔑", summary: "Identity", intro: "Visit GAES in early July.", content: `<div class="p-4 bg-blue-50 border rounded-xl text-[11px]">Request Internal Number if no Citizen Card.</div>` },
-            { id: 'finish', title: "5. Final Application", icon: "🎉", summary: "Success", intro: "Submit your choices!", content: `<div class="text-center py-10"><button onclick="launchCelebration()" class="w-full py-4 bg-emerald-500 text-white rounded-2xl font-extrabold">CELEBRATE SUCCESS ✨</button></div>` }
+            { id: 'eligibility', title: "0. Eligibility Wizard", icon: "⚖️", summary: "Can you apply as a National?", intro: "Immigrants can often apply as 'National Students' if they meet certain criteria.", content: `<div class="p-6 bg-slate-900 text-white rounded-2xl shadow-xl"><h4 class="font-bold text-blue-400 mb-4">Check Status:</h4><div class="space-y-4 text-sm"><label class="flex items-start gap-3"><input type="checkbox" id="rule1" class="mt-1" onchange="toggleWizard()"> Legally resided in Portugal > 2 years.</label><label class="flex items-start gap-3"><input type="checkbox" id="rule2" class="mt-1" onchange="toggleWizard()"> Living under family reunification.</label><div id="wizard-result" class="hidden p-4 bg-emerald-500/20 border border-emerald-500/30 rounded-xl text-emerald-100 font-bold">✅ Likely ELIGIBLE!</div></div></div>` },
+            { id: 'attestation', title: "1. Document Attestation", icon: "📄", summary: "Legalizing Certificates", intro: "Grade 10/11/12 certificates must be legalized correctly.", content: `<div class="custom-card p-6"><div class="space-y-3">${['Grade 10-12 Certs', 'MFA Nepal Attestation', 'Embassy Stamp Lisbon', 'Official Translations'].map((item, i) => `<label class="flex items-center gap-3 p-3 bg-slate-50 rounded-xl cursor-pointer"><input type="checkbox" onchange="saveProgress('s1_${i}', this.checked)" ${userProgress['s1_'+i]?'checked':''}> <span class="text-sm font-medium">${item}</span></label>`).join('')}</div></div>` },
+            { id: 'equivalency', title: "2. Equivalency Stage", icon: "🏫", summary: "Secondary School Visit", intro: "Convert your GPA to the Portuguese scale.", content: `<div class="p-5 bg-blue-50 border border-blue-100 rounded-2xl font-bold text-sm">Agrupamento de Escolas das Laranjeiras, Lisboa</div>` },
+            { id: 'substitution', title: "3. Exam Substitution", icon: "🔁", summary: "Artigo 20-A", intro: "Substitute entrance exams with home board results.", content: `<div class="bg-slate-900 p-6 rounded-3xl text-white"><button onclick="copyTemplate()" class="bg-blue-600 px-4 py-1 rounded-full text-[10px] mb-4">Copy Email Template</button><div class="text-[11px] font-mono text-slate-300 bg-slate-800 p-4 rounded-xl" id="mail-text">Assunto: Pedido de substituição de provas de ingresso...</div></div>` },
+            { id: 'gaes', title: "4. Password & GAES", icon: "🔑", summary: "Official Registration", intro: "Verify your identity at a GAES office in early July.", content: `<div class="p-4 bg-yellow-50 border rounded-xl text-[11px] text-yellow-800">Ask for an <strong>Internal Number</strong> if you don't have a Citizen Card!</div>` },
+            { id: 'victory', title: "5. Final Application", icon: "🎉", summary: "The Result Stage", intro: "Submit your application in late July.", content: `<div class="text-center py-10"><button onclick="launchCelebration()" class="w-full py-4 bg-emerald-500 text-white rounded-2xl font-extrabold shadow-2xl">CELEBRATE SUCCESS ✨</button></div>` }
         ];
 
-        let currentActiveIdx = 0;
+        let currentActiveIdx = -1;
 
         function renderSidebar() {
-            document.getElementById('roadmap-container').innerHTML = roadmapSteps.map((s, i) => `
-                <div onclick="renderStep(${i})" class="p-4 rounded-2xl cursor-pointer ${currentActiveIdx === i ? 'step-active shadow-sm' : 'step-inactive'}">
-                    <div class="flex items-center gap-4"><span class="text-2xl">${s.icon}</span><div><h3 class="text-[11px] font-extrabold">${s.title}</h3></div></div>
+            document.getElementById('roadmap-container').innerHTML = roadmapSteps.map((step, i) => `
+                <div onclick="renderStep(${i})" class="p-4 rounded-2xl cursor-pointer transition-all ${currentActiveIdx === i ? 'step-active' : 'step-inactive hover:bg-slate-100'}">
+                    <div class="flex items-center gap-4"><span class="text-2xl">${step.icon}</span><div><h3 class="text-[11px] font-extrabold">${step.title}</h3></div></div>
                 </div>`).join('');
         }
 
         function renderStep(idx) {
-            currentActiveIdx = idx; 
+            currentActiveIdx = idx;
             renderSidebar();
             const s = roadmapSteps[idx];
-            const pane = document.getElementById('detail-pane');
+            document.getElementById('detail-pane').innerHTML = `<div class="animate-in fade-in slide-in-from-bottom-6 duration-500"><h2 class="text-3xl font-black text-slate-900 mb-4">${s.title}</h2><p class="text-slate-500 mb-8">${s.intro}</p>${s.content}<div class="mt-16 flex justify-between"><button onclick="renderStep(${idx-1})" class="text-sm font-bold text-slate-400 ${idx===0?'invisible':''}">← Previous</button><button onclick="renderStep(${idx+1})" class="px-8 py-3 bg-slate-900 text-white rounded-xl font-bold text-sm ${idx===roadmapSteps.length-1?'invisible':''}">Next Step →</button></div></div>`;
             
-            pane.innerHTML = `<div class="animate-in fade-in slide-in-from-bottom-6 duration-500"><h2 class="text-3xl font-black text-slate-900 mb-4">${s.title}</h2><p class="text-slate-500 mb-8">${s.intro}</p>${s.content}<div class="mt-16 flex justify-between"><button onclick="renderStep(${idx-1})" class="text-sm font-bold text-slate-400 ${idx===0?'invisible':''}">← Back</button><button onclick="renderStep(${idx+1})" class="px-8 py-3 bg-slate-900 text-white rounded-xl font-bold text-sm ${idx===roadmapSteps.length-1?'invisible':''}">Next Step →</button></div></div>`;
+            if (window.innerWidth < 768) {
+                document.getElementById('content-section').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function toggleWizard() {
+            const show = document.getElementById('rule1').checked || document.getElementById('rule2').checked;
+            document.getElementById('wizard-result').classList.toggle('hidden', !show);
+        }
+
+        function copyTemplate() { navigator.clipboard.writeText(document.getElementById('mail-text').innerText); alert("Email copied!"); }
+
+        function launchCelebration() {
+            const canvas = document.getElementById('victory-canvas');
+            canvas.style.display = 'block';
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            let particles = [];
+            for (let i = 0; i < 100; i++) particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 5 + 2, color: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'][Math.floor(Math.random()*4)], speed: Math.random() * 3 + 1 });
+            function draw() { ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p => { p.y += p.speed; ctx.fillStyle = p.color; ctx.fillRect(p.x, p.y, p.size, p.size); if(p.y > canvas.height) p.y = -20; }); requestAnimationFrame(draw); }
+            draw(); setTimeout(() => canvas.style.display = 'none', 5000);
+        }
+
+        window.onload = () => {            pane.innerHTML = `<div class="animate-in fade-in slide-in-from-bottom-6 duration-500"><h2 class="text-3xl font-black text-slate-900 mb-4">${s.title}</h2><p class="text-slate-500 mb-8">${s.intro}</p>${s.content}<div class="mt-16 flex justify-between"><button onclick="renderStep(${idx-1})" class="text-sm font-bold text-slate-400 ${idx===0?'invisible':''}">← Back</button><button onclick="renderStep(${idx+1})" class="px-8 py-3 bg-slate-900 text-white rounded-xl font-bold text-sm ${idx===roadmapSteps.length-1?'invisible':''}">Next Step →</button></div></div>`;
             
             // CRITICAL FIX: Automatically scroll to the content on mobile
             if (window.innerWidth < 768) {
