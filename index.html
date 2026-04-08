@@ -38,8 +38,8 @@
         /* 3D Flipping Button Styles */
         .flip-container {
             perspective: 1000px;
-            width: 240px;
-            height: 44px;
+            width: 180px;
+            height: 36px;
         }
         .flip-inner {
             position: relative;
@@ -61,23 +61,21 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 10px;
+            border-radius: 8px;
             font-size: 10px;
             font-weight: 800;
             text-transform: uppercase;
             border: 1px solid #bfdbfe;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
         }
         .flip-front {
             background-color: #eff6ff;
             color: #2563eb;
-            padding: 0 10px;
         }
         .flip-back {
             background-color: #2563eb;
             color: white;
             transform: rotateY(180deg);
-            font-size: 9px;
+            font-size: 8px;
             text-transform: none;
         }
 
@@ -93,406 +91,11 @@
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
-<body class="antialiased h-screen flex flex-col overflow-hidden">
+<body class="antialiased min-h-screen flex flex-col md:h-screen md:overflow-hidden">
 
     <canvas id="victory-canvas"></canvas>
 
-    <header class="bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center z-20 shadow-sm">
-        <div class="flex items-center space-x-3">
-            <span class="text-3xl">🇵🇹</span>
-            <div>
-                <h1 class="text-lg font-extrabold text-slate-900 leading-tight tracking-tight">Portugal Admission Roadmap</h1>
-                <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">National Student Pathway (Immigrant Focus)</p>
-            </div>
-        </div>
-        
-        <div class="flip-container hidden sm:block">
-            <div class="flip-inner">
-                <div class="flip-front">
-                    Further Inquiries? Email me:
-                </div>
-                <a href="mailto:s.tamang@campus.fct.unl.pt" class="flip-back">
-                    s.tamang@campus.fct.unl.pt
-                </a>
-            </div>
-        </div>
-    </header>
-
-    <div class="sm:hidden bg-blue-50 border-b border-blue-100 p-2 text-center">
-        <a href="mailto:s.tamang@campus.fct.unl.pt" class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">
-            📧 Further Inquiries? Email Me
-        </a>
-    </div>
-
-    <main class="flex-1 flex flex-col md:flex-row overflow-hidden max-w-screen-2xl mx-auto w-full">
-        
-        <nav class="w-full md:w-80 bg-slate-50 border-r border-slate-100 overflow-y-auto p-6 space-y-6">
-            <div>
-                <h2 class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-4">Steps to your dream uni 🎓</h2>
-                <div id="roadmap-container" class="space-y-2">
-                    </div>
-            </div>
-
-            <div class="pt-6 border-t border-slate-200">
-                <h2 class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-4">Official Help Desk</h2>
-                <div class="space-y-3">
-                    <a href="https://www.dges.gov.pt/pt/pagina/be-com" target="_blank" class="block p-3 bg-blue-600 text-white rounded-xl text-xs font-bold text-center hover:bg-blue-700 shadow-md transition flex items-center justify-center gap-2">
-                        <span>🎫</span> DGES e-balcão (BE-COM)
-                    </a>
-                    <a href="https://www.dges.gov.pt/pt/pagina/calendario-concurso-nacional-de-acesso-0?plid=593" target="_blank" class="block p-3 bg-white rounded-xl border border-slate-200 text-xs font-bold hover:border-blue-500 transition shadow-sm flex items-center gap-2">
-                        <span>📅</span> Access Calendar
-                    </a>
-                    <a href="https://www.dges.gov.pt/pt/pagina/substituicao-de-provas-de-ingresso-por-exames-estrangeiros?plid=593" target="_blank" class="block p-3 bg-white rounded-xl border border-slate-100 text-xs font-semibold hover:border-blue-500 transition flex items-center gap-2">
-                        <span>📚</span> Substitution Guide
-                    </a>
-                </div>
-            </div>
-            
-            <button onclick="clearLocalProgress()" class="w-full py-2 text-[9px] font-bold text-red-400 uppercase tracking-widest hover:text-red-600 transition">
-                Reset Checklist Progress
-            </button>
-        </nav>
-
-        <section class="flex-1 bg-white overflow-y-auto p-6 md:p-12 relative" id="content-section">
-            <div class="max-w-2xl mx-auto" id="detail-pane">
-                </div>
-        </section>
-
-    </main>
-
-    <script>
-        const storageKey = 'pt_admission_static_final';
-        let userProgress = JSON.parse(localStorage.getItem(storageKey)) || {};
-
-        function saveStepProgress(id, checked) {
-            userProgress[id] = checked;
-            localStorage.setItem(storageKey, JSON.stringify(userProgress));
-        }
-
-        function clearLocalProgress() {
-            if(confirm("Are you sure you want to reset all checklist marks?")) {
-                localStorage.removeItem(storageKey);
-                location.reload();
-            }
-        }
-
-        const roadmapSteps = [
-            {
-                title: "0. Eligibility Wizard",
-                icon: "⚖️",
-                summary: "Check 'National' Status",
-                intro: "Your fee structure depends on this. Immigrants can apply as 'National Students' if they meet certain legal residency or family rules.",
-                content: `
-                    <div class="space-y-6">
-                        <div class="p-6 bg-slate-900 text-white rounded-2xl shadow-xl">
-                            <h4 class="font-bold text-blue-400 mb-4 tracking-tight text-sm uppercase">Quick Eligibility Check:</h4>
-                            <div class="space-y-4 text-sm">
-                                <p class="font-medium text-slate-200">Do you fall into any of these situations?</p>
-                                <ul class="space-y-3">
-                                    <li class="flex items-start gap-3">
-                                        <input type="checkbox" id="rule1" class="mt-1 w-4 h-4 cursor-pointer" onchange="runWizard()">
-                                        <label for="rule1" class="leading-relaxed cursor-pointer">I have lived legally in Portugal for more than 2 years (uninterruptedly) as of Jan 1st.</label>
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <input type="checkbox" id="rule2" class="mt-1 w-4 h-4 cursor-pointer" onchange="runWizard()">
-                                        <label for="rule2" class="leading-relaxed cursor-pointer">I am here under <strong>Family Reunification</strong> (e.g., my parent or spouse has lived here legally for >2 years).</label>
-                                    </li>
-                                </ul>
-                                <div id="wizard-result" class="hidden p-4 bg-emerald-500/20 border border-emerald-500/30 rounded-xl text-emerald-100 font-bold animate-pulse">
-                                    ✅ You likely qualify as a National Student!
-                                </div>
-                                <p id="wizard-default" class="text-slate-400 italic text-[11px]">Check a situation above to confirm status.</p>
-                            </div>
-                        </div>
-                        <p class="text-[11px] text-slate-500 italic leading-relaxed">
-                            <strong>Note:</strong> Time on a purely 'Student Visa' (Art. 91) often doesn't count toward the residency conversion. Raise a ticket via BE-COM for definitive confirmation.
-                        </p>
-                    </div>
-                `
-            },
-            {
-                title: "1. Document Attestation",
-                icon: "📄",
-                summary: "Legalizing Certificates",
-                intro: "Your high school certificates (Grade 10/11/12) must be legalized in this specific sequence to be accepted.",
-                content: `
-                    <div class="space-y-6">
-                        <div class="custom-card p-6">
-                            <h4 class="text-sm font-bold text-slate-800 mb-4 tracking-tight">Interactive Progress:</h4>
-                            <div class="space-y-3">
-                                ${['Board Certificates (Grade 10, 11, 12)', 'Consular/MFA attestation in your home country', 'Consulate/Embassy stamp in Lisbon (Apostille)', 'Portuguese Translations by a certified translator'].map((item, index) => {
-                                    const cid = `chk_final_${index}`;
-                                    const checked = userProgress[cid] ? 'checked' : '';
-                                    return `
-                                    <label class="checklist-item flex items-center gap-3 p-3 bg-slate-50 rounded-xl cursor-pointer hover:bg-slate-100 transition group">
-                                        <input type="checkbox" id="${cid}" class="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500" onchange="saveStepProgress('${cid}', this.checked)" ${checked}>
-                                        <span class="text-sm font-medium group-hover:text-blue-700 transition">${item}</span>
-                                    </label>`;
-                                }).join('')}
-                            </div>
-                        </div>
-                    </div>
-                `
-            },
-            {
-                title: "2. Equivalency Stage",
-                icon: "🏫",
-                summary: "Secondary School Visit",
-                intro: "You must convert your high school GPA to the Portuguese scale (0-20). This is done at a public secondary school.",
-                content: `
-                    <div class="space-y-6">
-                        <div class="p-5 bg-blue-50 border border-blue-100 rounded-2xl">
-                            <h4 class="text-sm font-bold text-blue-800 mb-1">Where to go?</h4>
-                            <p class="text-xs text-blue-700">Visit any <strong>Escola Secundária Pública</strong>. A common location in Lisbon is:</p>
-                            <address class="not-italic text-sm mt-3 font-bold text-slate-800 bg-white p-3 rounded-lg border border-blue-200 shadow-sm">
-                                Agrupamento de Escolas das Laranjeiras<br>
-                                Estrada das Laranjeiras 122, 1600-136 Lisboa
-                            </address>
-                        </div>
-                        <div class="custom-card p-6">
-                             <h4 class="text-xs font-bold uppercase text-slate-400 mb-4 tracking-widest">Documents to provide:</h4>
-                             <ul class="text-sm space-y-3 text-slate-600">
-                                <li class="flex gap-2">✅ <span>Stamped Certificates (Step 1)</span></li>
-                                <li class="flex gap-2">✅ <span>Residency Card / Passport</span></li>
-                                <li class="flex gap-2">✅ <span>Proof of Address (Atestado)</span></li>
-                             </ul>
-                             <div class="mt-5 p-3 bg-orange-50 border-l-4 border-orange-400 text-[11px] text-orange-800 leading-snug">
-                                <strong>Warning:</strong> Apply in March/April. Waiting times can reach 4 months!
-                             </div>
-                        </div>
-                    </div>
-                `
-            },
-            {
-                title: "3. Exam Substitution",
-                icon: "🔁",
-                summary: "Artigo 20-A Access",
-                intro: "Instead of taking the Portuguese national exams, request to use your foreign final board results.",
-                content: `
-                    <div class="space-y-6">
-                        <p class="text-sm text-slate-600 leading-relaxed">Contact <strong>CNAES</strong> to request this. See the <a href="https://www.dges.gov.pt/pt/pagina/substituicao-de-provas-de-ingresso-por-exames-estrangeiros?plid=593" target="_blank" class="text-blue-600 font-bold underline">Official Substitution Guide</a>.</p>
-                        
-                        <div class="bg-slate-900 p-6 rounded-3xl text-white shadow-xl">
-                            <div class="flex justify-between items-center mb-4">
-                                <h4 class="text-xs font-extrabold uppercase text-blue-400">Formal Request Email</h4>
-                                <button onclick="copyMailBody()" class="text-[10px] bg-blue-600 hover:bg-blue-500 px-3 py-1 rounded-full transition" id="copy-btn">Copy Text</button>
-                            </div>
-                            <div class="text-[11px] font-mono leading-relaxed text-slate-300 bg-slate-800 p-5 rounded-xl border border-slate-700 whitespace-pre-wrap select-all" id="mail-text">Assunto: Pedido de substituição de provas de ingresso (Artigo 20.º-A)
-
-Exmos. Senhores,
-Venho por este meio solicitar a análise da substituição das provas de ingresso (Matemática A / Física e Química) pelos exames finais realizados no meu país de origem, ao abrigo do Artigo 20.º-A do Decreto-Lei n.º 296-A/98.
-
-Submeto em anexo:
-1. Certificados de habilitações autenticados;
-2. Programas detalhados das disciplinas envolvidas;
-3. Documento de equivalência obtido em Portugal.
-
-Atentamente,
-[Seu Nome Completo]
-[NIF / Número de Identificação]</div>
-                        </div>
-                        <div class="flex items-center gap-3 p-4 bg-slate-100 rounded-2xl text-xs">
-                             <span class="text-lg">📧</span>
-                             <span>Send to: <strong>cnaes@dges.gov.pt</strong></span>
-                        </div>
-                    </div>
-                `
-            },
-            {
-                title: "4. Password & GAES",
-                icon: "🔑",
-                summary: "Identity Activation",
-                intro: "Activate your admission portal in person at an official access office (GAES).",
-                content: `
-                    <div class="space-y-6">
-                        <div class="custom-card p-6 bg-blue-50 border-blue-100">
-                            <h4 class="font-bold text-sm text-blue-900 mb-3">Portal Access:</h4>
-                            <p class="text-xs text-blue-700 mb-5 leading-relaxed">Request the "Senha" at DGES.gov.pt, print the PDF, and visit one of these university offices:</p>
-                            
-                            <div class="space-y-4">
-                                <div class="bg-white p-4 rounded-xl border border-blue-100">
-                                    <p class="text-[10px] font-extrabold text-slate-400 uppercase mb-1">GAES Lisbon (ISCTE)</p>
-                                    <p class="text-sm font-semibold">ISCTE - Instituto Universitário de Lisboa</p>
-                                    <p class="text-[11px] text-slate-500">Av. das Forças Armadas, 1649-026 Lisboa</p>
-                                </div>
-                                <div class="bg-white p-4 rounded-xl border border-blue-100">
-                                    <p class="text-[10px] font-extrabold text-slate-400 uppercase mb-1">GAES Lisbon (ULisboa)</p>
-                                    <p class="text-sm font-semibold">Reitoria da Universidade de Lisboa</p>
-                                    <p class="text-[11px] text-slate-500">Al. da Cidade Universitária, 1649-004 Lisboa</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-xl flex items-start gap-4">
-                             <span class="text-2xl">⚠️</span>
-                             <div>
-                                <p class="text-[11px] text-yellow-900 font-bold mb-1">Early July Deadline</p>
-                                <p class="text-[10px] text-yellow-800 leading-relaxed">If you don't have a Portuguese CC, visit the GAES in <strong>early July</strong> to request an <strong>Internal Number</strong>. This is mandatory for foreign passport holders.</p>
-                             </div>
-                        </div>
-                    </div>
-                `
-            },
-            {
-                title: "5. Final Application",
-                icon: "🎉",
-                summary: "Choice Strategy",
-                intro: "Submit your final choices during the 1st Phase (usually July/August).",
-                content: `
-                    <div class="flex flex-col items-center justify-center py-10 text-center space-y-8">
-                        <div class="w-32 h-32 bg-emerald-100 rounded-full flex items-center justify-center text-5xl shadow-xl shadow-emerald-50 animate-bounce">🏆</div>
-                        <div>
-                            <h3 class="text-3xl font-black text-slate-900 tracking-tight leading-tight">You are Ready!</h3>
-                            <p class="text-sm text-slate-500 max-w-sm mt-4 leading-relaxed">You've finished the roadmap. Rank your choices carefully and submit your dream!</p>
-                        </div>
-                        <div class="space-y-4 w-full max-w-sm">
-                             <a href="https://www.dges.gov.pt/pt/pagina/be-com" target="_blank" class="block w-full py-4 bg-slate-900 text-white rounded-2xl font-bold text-sm hover:bg-slate-800 transition">Contact DGES Support (e-balcão)</a>
-                             <button onclick="launchCelebration()" class="w-full py-4 bg-emerald-500 text-white rounded-2xl font-extrabold shadow-2xl hover:scale-105 active:scale-95 transition-all">CELEBRATE SUCCESS ✨</button>
-                        </div>
-                    </div>
-                `
-            }
-        ];
-
-        let activeStepIdx = 0;
-
-        function initApp() {
-            renderSidebarNav();
-            renderStepView(0);
-        }
-
-        function renderSidebarNav() {
-            const container = document.getElementById('roadmap-container');
-            container.innerHTML = roadmapSteps.map((step, i) => `
-                <div onclick="renderStepView(${i})" class="p-4 rounded-2xl cursor-pointer transition-all duration-300 group ${activeStepIdx === i ? 'step-active shadow-sm' : 'step-inactive hover:bg-slate-100'}">
-                    <div class="flex items-center gap-4">
-                        <span class="text-2xl">${step.icon}</span>
-                        <div>
-                            <h3 class="text-[11px] font-extrabold ${activeStepIdx === i ? 'text-blue-700' : 'text-slate-500 group-hover:text-slate-800'}">${step.title}</h3>
-                            <p class="text-[9px] text-slate-400 font-medium tracking-tight">${step.summary}</p>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderStepView(idx) {
-            activeStepIdx = idx;
-            renderSidebarNav();
-            const step = roadmapSteps[idx];
-            const pane = document.getElementById('detail-pane');
-            
-            pane.innerHTML = `
-                <div class="animate-in fade-in slide-in-from-bottom-6 duration-500">
-                    <div class="mb-10">
-                        <span class="text-[10px] font-extrabold bg-blue-100 text-blue-700 px-3 py-1 rounded-full uppercase tracking-widest">Phase ${idx}</span>
-                        <h2 class="text-4xl font-black text-slate-900 mt-5 mb-6 leading-tight tracking-tight">${step.title}</h2>
-                        <p class="text-lg text-slate-500 font-medium leading-relaxed">${step.intro}</p>
-                    </div>
-                    ${step.content}
-                    
-                    <div class="mt-20 flex justify-between items-center border-t border-slate-100 pt-10">
-                        <button onclick="renderStepView(${idx - 1})" class="text-sm font-bold text-slate-400 hover:text-slate-900 transition ${idx === 0 ? 'invisible' : ''}">← Previous</button>
-                        <button onclick="renderStepView(${idx + 1})" class="px-8 py-3 bg-slate-900 text-white rounded-2xl font-bold text-sm hover:bg-slate-800 shadow-xl transition ${idx === roadmapSteps.length - 1 ? 'invisible' : ''}">Next Stage →</button>
-                    </div>
-                </div>
-            `;
-
-            // Mobile specific auto-scroll feature
-            if (window.innerWidth < 768) {
-                const contentSection = document.getElementById('content-section');
-                contentSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }
-
-        function runWizard() {
-            const r1 = document.getElementById('rule1')?.checked || false;
-            const r2 = document.getElementById('rule2')?.checked || false;
-            const res = document.getElementById('wizard-result');
-            const def = document.getElementById('wizard-default');
-            
-            if(res && def) {
-                if(r1 || r2) {
-                    res.classList.remove('hidden');
-                    def.classList.add('hidden');
-                } else {
-                    res.classList.add('hidden');
-                    def.classList.remove('hidden');
-                }
-            }
-        }
-
-        function copyMailBody() {
-            const text = document.getElementById('mail-text').innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                const btn = document.getElementById('copy-btn');
-                const old = btn.innerText;
-                btn.innerText = "COPIED!";
-                setTimeout(() => { btn.innerText = old; }, 2000);
-            });
-        }
-
-        function launchCelebration() {
-            const canvas = document.getElementById('victory-canvas');
-            canvas.style.display = 'block';
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            let particles = [];
-            let colors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
-            
-            for (let i = 0; i < 200; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height - canvas.height,
-                    size: Math.random() * 8 + 4,
-                    color: colors[Math.floor(Math.random() * colors.length)],
-                    speed: Math.random() * 5 + 2,
-                    angle: Math.random() * 6.28,
-                    rotation: Math.random() * 0.2 - 0.1
-                });
-            }
-            
-            function draw() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                particles.forEach((p, i) => {
-                    p.y += p.speed; 
-                    p.angle += p.rotation;
-                    ctx.save(); 
-                    ctx.translate(p.x, p.y); 
-                    ctx.rotate(p.angle);
-                    ctx.fillStyle = p.color; 
-                    ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size); 
-                    ctx.restore();
-                    
-                    if (p.y > canvas.height) { 
-                        particles[i].y = -20; 
-                        particles[i].x = Math.random() * canvas.width; 
-                    }
-                });
-                requestAnimationFrame(draw);
-            }
-            draw();
-            setTimeout(() => { canvas.style.display = 'none'; }, 8000);
-        }
-
-        // Initialize Application
-        window.onload = initApp;
-    </script>
-</body>
-</html>            border: 1px solid #f1f5f9;
-        }
-
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-    </style>
-</head>
-<body class="antialiased h-screen flex flex-col overflow-hidden">
-
-    <canvas id="victory-canvas"></canvas>
-
-    <!-- Header -->
-    <header class="bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center z-20 shadow-sm">
+    <header class="bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center z-20 shadow-sm sticky top-0">
         <div class="flex items-center space-x-3">
             <span class="text-3xl">🇵🇹</span>
             <div>
@@ -501,29 +104,20 @@ Atentamente,
             </div>
         </div>
         
-        <!-- Flipping Inquiry Button -->
         <div class="flip-container">
             <div class="flip-inner">
-                <div class="flip-front">
-                    When in doubt email me 👀: 
-                </div>
-                <a href="mailto:s.tamang@campus.fct.unl.pt" class="flip-back">
-                    s.tamang@campus.fct.unl.pt
-                </a>
+                <div class="flip-front">When in doubt email me 👀: </div>
+                <a href="mailto:s.tamang@campus.fct.unl.pt" class="flip-back">s.tamang@campus.fct.unl.pt</a>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="flex-1 flex flex-col md:flex-row overflow-hidden max-w-screen-2xl mx-auto w-full">
+    <main class="flex-1 flex flex-col md:flex-row md:overflow-hidden max-w-screen-2xl mx-auto w-full">
         
-        <!-- Sidebar Navigation -->
-        <nav class="w-full md:w-80 bg-slate-50 border-r border-slate-100 overflow-y-auto p-6 space-y-6">
+        <nav class="w-full md:w-80 bg-slate-50 border-r border-slate-100 p-6 space-y-6 md:overflow-y-auto">
             <div>
                 <h2 class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-4">Steps to your dream uni 🎓</h2>
-                <div id="roadmap-container" class="space-y-2">
-                    <!-- Roadmap items injected by JS -->
-                </div>
+                <div id="roadmap-container" class="space-y-2"></div>
             </div>
 
             <div class="pt-6 border-t border-slate-200">
@@ -542,17 +136,13 @@ Atentamente,
             </div>
         </nav>
 
-        <!-- Content Area -->
-        <section class="flex-1 bg-white overflow-y-auto p-6 md:p-12 relative">
-            <div class="max-w-2xl mx-auto" id="detail-pane">
-                <!-- Step content injected by JS -->
-            </div>
+        <section class="flex-1 bg-white p-6 md:p-12 relative md:overflow-y-auto">
+            <div class="max-w-2xl mx-auto" id="detail-pane"></div>
         </section>
 
     </main>
 
     <script>
-        // Store progress in LocalStorage
         const storageKey = 'immigrant_admission_progress_v4';
         let userProgress = JSON.parse(localStorage.getItem(storageKey)) || {};
 
@@ -631,9 +221,9 @@ Atentamente,
                     <div class="space-y-6">
                         <div class="p-5 bg-blue-50 border border-blue-100 rounded-2xl">
                             <h4 class="text-sm font-bold text-blue-800 mb-1">Where to go?</h4>
-                            <p class="text-xs text-blue-700 leading-relaxed">Visit any <strong>Escola Secundária (High School)</strong>. Make sure the receptionist is friendly and preferably speaks English.:</p>
+                            <p class="text-xs text-blue-700 leading-relaxed">Visit any <strong>Escola Secundária (High School)</strong>. Make sure the receptionist is friendly and preferably speaks English.</p>
                             <address class="not-italic text-sm mt-3 font-bold text-slate-800 bg-white p-3 rounded-lg border border-blue-200 shadow-sm">
-                                Agrupamento de Escolas das Laranjeiras<br>
+                              This was the school I went:  Agrupamento de Escolas das Laranjeiras<br>
                                 Estrada das Laranjeiras 122, 1600-136 Lisboa
                             </address>
                         </div>
@@ -787,6 +377,11 @@ Atentamente,
                     </div>
                 </div>
             `;
+
+            // Fix: Automatic scroll to content on mobile after selecting a step
+            if (window.innerWidth < 768) {
+                document.getElementById('detail-pane').scrollIntoView({ behavior: 'smooth' });
+            }
         }
 
         function toggleWizard() {
@@ -832,6 +427,7 @@ Atentamente,
                     rotation: Math.random() * 0.2 - 0.1
                 });
             }
+            let animId;
             function draw() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 particles.forEach((p, i) => {
@@ -840,10 +436,13 @@ Atentamente,
                     ctx.fillStyle = p.color; ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size); ctx.restore();
                     if (p.y > canvas.height) { particles[i].y = -20; particles[i].x = Math.random() * canvas.width; }
                 });
-                requestAnimationFrame(draw);
+                animId = requestAnimationFrame(draw);
             }
             draw();
-            setTimeout(() => { canvas.style.display = 'none'; }, 8000);
+            setTimeout(() => { 
+                cancelAnimationFrame(animId);
+                canvas.style.display = 'none'; 
+            }, 8000);
         }
 
         window.onload = initApp;
