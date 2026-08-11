@@ -36,27 +36,50 @@ export default function Index({ steps, supportLinks }) {
     const step = steps[activeIndex];
 
     useEffect(() => {
-        if (window.innerWidth < 768) {
+        if (window.innerWidth < 1024) {
             document
                 .getElementById('detail-pane')
-                ?.scrollIntoView({ behavior: 'smooth' });
+                ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     }, [activeIndex]);
 
     return (
-        <AppLayout title="Roadmap">
+        <AppLayout title="Roadmap" breadcrumbs={['Home', 'Roadmap']}>
             <Head title="Admission Roadmap" />
             <PageHeader
                 title="Admission roadmap"
-                breadcrumbs={['Home', 'Roadmap']}
+                subtitle="Follow the National Student pathway step by step."
             />
 
-            <div className="grid gap-6 lg:grid-cols-[16rem_1fr]">
-                <CrmCard className="h-fit">
-                    <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-crm-muted">
-                        Pathway
-                    </p>
-                    <div className="space-y-1">
+            <div className="mb-4 -mx-1 flex gap-2 overflow-x-auto px-1 pb-1 lg:hidden">
+                {steps.map((item, index) => {
+                    const active = index === activeIndex;
+                    return (
+                        <button
+                            key={item.id}
+                            type="button"
+                            onClick={() => setActiveIndex(index)}
+                            className={`shrink-0 rounded-full px-3.5 py-2 text-xs font-semibold transition ${
+                                active
+                                    ? 'bg-crm-primary text-white'
+                                    : 'bg-white text-crm-muted ring-1 ring-crm'
+                            }`}
+                        >
+                            {index + 1}.{' '}
+                            {item.title.replace(/^\d+\.\s*/, '').split(' ')[0]}
+                        </button>
+                    );
+                })}
+            </div>
+
+            <div className="grid gap-5 lg:grid-cols-[17rem_minmax(0,1fr)] xl:gap-6">
+                <CrmCard className="hidden h-fit lg:block" padded={false}>
+                    <div className="border-b border-crm px-5 py-4">
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-crm-muted">
+                            Pathway
+                        </p>
+                    </div>
+                    <div className="space-y-1 p-3">
                         {steps.map((item, index) => {
                             const active = index === activeIndex;
                             return (
@@ -64,13 +87,13 @@ export default function Index({ steps, supportLinks }) {
                                     key={item.id}
                                     type="button"
                                     onClick={() => setActiveIndex(index)}
-                                    className={`w-full rounded-md px-3 py-2.5 text-left text-sm transition ${
+                                    className={`w-full rounded-xl px-3 py-3 text-left text-sm transition ${
                                         active
-                                            ? 'bg-crm-primary/10 text-crm-primary'
-                                            : 'text-crm-muted hover:bg-crm-canvas hover:text-crm-heading'
+                                            ? 'bg-crm-primary/10 text-crm-primary shadow-[inset_3px_0_0_0_#0d99ff]'
+                                            : 'text-crm-muted hover:bg-slate-50 hover:text-crm-heading'
                                     }`}
                                 >
-                                    <span className="block text-[11px] font-semibold">
+                                    <span className="block text-[11px] font-semibold uppercase tracking-wide opacity-80">
                                         Step {index + 1}
                                     </span>
                                     <span className="mt-0.5 block font-medium leading-snug">
@@ -80,7 +103,7 @@ export default function Index({ steps, supportLinks }) {
                             );
                         })}
                     </div>
-                    <div className="mt-5 border-t border-crm pt-4">
+                    <div className="border-t border-crm px-5 py-4">
                         <p className="text-xs font-semibold text-crm-muted">
                             Official desks
                         </p>
@@ -102,10 +125,20 @@ export default function Index({ steps, supportLinks }) {
                 </CrmCard>
 
                 <CrmCard id="detail-pane">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-crm-primary">
-                        Step {activeIndex + 1} of {steps.length}
-                    </p>
-                    <h2 className="mt-2 text-2xl font-semibold text-crm-heading">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-crm-primary">
+                            Step {activeIndex + 1} of {steps.length}
+                        </p>
+                        <div className="h-1.5 w-28 overflow-hidden rounded-full bg-slate-100 sm:w-36">
+                            <div
+                                className="h-full rounded-full bg-crm-primary transition-all"
+                                style={{
+                                    width: `${((activeIndex + 1) / steps.length) * 100}%`,
+                                }}
+                            />
+                        </div>
+                    </div>
+                    <h2 className="mt-3 text-xl font-semibold tracking-tight text-crm-heading sm:text-2xl">
                         {step.title.replace(/^\d+\.\s*/, '')}
                     </h2>
                     <p className="mt-3 text-sm leading-relaxed text-crm-muted">
@@ -114,13 +147,13 @@ export default function Index({ steps, supportLinks }) {
                     <div className="mt-6 border-t border-crm pt-6">
                         <StepBody step={step} />
                     </div>
-                    <div className="mt-8 flex items-center justify-between border-t border-crm pt-5">
+                    <div className="mt-8 flex items-center justify-between gap-3 border-t border-crm pt-5">
                         <button
                             type="button"
                             onClick={() =>
                                 setActiveIndex((i) => Math.max(0, i - 1))
                             }
-                            className={`text-sm font-semibold text-crm-muted hover:text-crm-heading ${
+                            className={`rounded-xl px-3 py-2 text-sm font-semibold text-crm-muted hover:bg-slate-50 hover:text-crm-heading ${
                                 activeIndex === 0 ? 'invisible' : ''
                             }`}
                         >
@@ -133,7 +166,7 @@ export default function Index({ steps, supportLinks }) {
                                     Math.min(steps.length - 1, i + 1),
                                 )
                             }
-                            className={`rounded-md bg-crm-heading px-4 py-2 text-sm font-semibold text-white hover:bg-crm-primary ${
+                            className={`crm-btn-primary ${
                                 activeIndex === steps.length - 1
                                     ? 'invisible'
                                     : ''

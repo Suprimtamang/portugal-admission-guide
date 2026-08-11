@@ -1,31 +1,38 @@
 export default function EquivalencyContent({ meta }) {
     return (
-        <div className="space-y-6">
-            <div className="border border-azul bg-azul/5 p-5">
-                <h4 className="text-sm font-bold text-azul">{meta.where_heading}</h4>
-                <p className="mt-2 text-sm leading-relaxed text-muted">
+        <div className="space-y-5">
+            <div className="rounded-2xl border border-sky-200 bg-sky-50/70 p-4 sm:p-5">
+                <h4 className="text-sm font-semibold text-crm-primary">
+                    {meta.where_heading}
+                </h4>
+                <p className="mt-2 text-sm leading-relaxed text-crm-heading">
                     {meta.where_body}
                 </p>
-                <address className="mt-4 border border-rule bg-sheet p-3 text-sm not-italic">
-                    <span className="font-bold">School on file:</span>{' '}
+                <address className="mt-4 rounded-xl border border-crm bg-white p-3.5 text-sm not-italic text-crm-heading">
+                    <span className="font-semibold">School on file:</span>{' '}
                     {meta.school_name}
                     <br />
-                    {meta.school_address}
+                    <span className="text-crm-muted">{meta.school_address}</span>
                 </address>
             </div>
 
             <div>
-                <h4 className="text-sm font-bold">Take with you</h4>
-                <ul className="mt-3 space-y-2 text-sm text-muted">
+                <h4 className="text-sm font-semibold text-crm-heading">
+                    Take with you
+                </h4>
+                <ul className="mt-3 space-y-2">
                     {(meta.bring || []).map((item) => (
-                        <li key={item} className="flex gap-2">
-                            <span className="font-bold text-azul">•</span>
+                        <li
+                            key={item}
+                            className="flex gap-2 rounded-xl border border-crm bg-white px-3.5 py-3 text-sm text-crm-heading"
+                        >
+                            <span className="font-bold text-crm-primary">•</span>
                             <span>{item}</span>
                         </li>
                     ))}
                 </ul>
                 {meta.tip && (
-                    <p className="mt-5 border-l-4 border-stamp bg-stamp/5 p-3 text-xs leading-relaxed text-ink">
+                    <p className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-3.5 text-sm leading-relaxed text-amber-950">
                         <strong>Tip:</strong> {meta.tip}
                     </p>
                 )}
