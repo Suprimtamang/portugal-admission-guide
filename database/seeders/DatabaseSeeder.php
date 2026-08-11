@@ -6,6 +6,7 @@ use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,18 +17,23 @@ class DatabaseSeeder extends Seeder
         $this->call(RoadmapSeeder::class);
         $this->call(KnowledgeSeeder::class);
 
-        User::factory()->superadmin()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => 'password',
-        ]);
+        User::query()->updateOrCreate(
+            ['email' => 'test@example.com'],
+            [
+                'name' => 'Test User',
+                'password' => Hash::make('password'),
+                'role' => UserRole::Superadmin,
+            ],
+        );
 
-        User::factory()->create([
-            'name' => 'Applicant User',
-            'email' => 'applicant@example.com',
-            'password' => 'password',
-            'role' => UserRole::User,
-        ]);
+        User::query()->updateOrCreate(
+            ['email' => 'applicant@example.com'],
+            [
+                'name' => 'Applicant User',
+                'password' => Hash::make('password'),
+                'role' => UserRole::User,
+            ],
+        );
 
         $this->call(BlogSeeder::class);
     }
