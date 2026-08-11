@@ -26,15 +26,15 @@ export default function Index({ posts, filters }) {
     };
 
     return (
-        <AppLayout title="Posts">
+        <AppLayout title="Posts" breadcrumbs={['Home', 'Posts']}>
             <Head title="Posts" />
             <PageHeader
                 title="Posts"
-                breadcrumbs={['Home', 'Posts']}
+                subtitle="Write, publish, and improve SEO for guide articles."
                 action={
                     <Link
                         href={route('app.posts.create')}
-                        className="rounded-md bg-crm-primary px-4 py-2 text-sm font-semibold text-white hover:bg-sky-600"
+                        className="crm-btn-primary"
                     >
                         New post
                     </Link>
@@ -42,116 +42,139 @@ export default function Index({ posts, filters }) {
             />
 
             {flash?.success && (
-                <p className="mb-4 rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-800">
+                <p className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
                     {flash.success}
                 </p>
             )}
 
-            <CrmCard>
-                <form onSubmit={search} className="mb-4 flex gap-2">
-                    <input
-                        value={q}
-                        onChange={(e) => setQ(e.target.value)}
-                        placeholder="Search title or slug…"
-                        className="w-full max-w-sm rounded-md border-crm text-sm"
-                    />
-                    <button
-                        type="submit"
-                        className="rounded-md bg-crm-primary px-4 py-2 text-sm font-semibold text-white"
+            <CrmCard padded={false}>
+                <div className="border-b border-crm px-5 py-4">
+                    <form
+                        onSubmit={search}
+                        className="flex flex-col gap-3 sm:flex-row sm:items-center"
                     >
-                        Search
-                    </button>
-                </form>
-
-                <div className="overflow-x-auto">
-                    <table className="min-w-full text-left text-sm">
-                        <thead className="bg-crm-canvas text-xs uppercase text-crm-muted">
-                            <tr>
-                                <th className="px-3 py-2 font-semibold">Title</th>
-                                <th className="px-3 py-2 font-semibold">Status</th>
-                                <th className="px-3 py-2 font-semibold">Author</th>
-                                <th className="px-3 py-2 font-semibold">Updated</th>
-                                <th className="px-3 py-2 font-semibold" />
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-crm">
-                            {posts.data.length === 0 && (
-                                <tr>
-                                    <td
-                                        colSpan={5}
-                                        className="px-3 py-6 text-crm-muted"
-                                    >
-                                        No posts yet. Create your first guide
-                                        article.
-                                    </td>
-                                </tr>
-                            )}
-                            {posts.data.map((post) => (
-                                <tr
-                                    key={post.id}
-                                    className="hover:bg-crm-canvas/50"
-                                >
-                                    <td className="px-3 py-3">
-                                        <Link
-                                            href={route(
-                                                'app.posts.edit',
-                                                post.id,
-                                            )}
-                                            className="font-medium text-crm-heading hover:text-crm-primary"
-                                        >
-                                            {post.title}
-                                        </Link>
-                                        <p className="text-xs text-crm-muted">
-                                            /blog/{post.slug}
-                                        </p>
-                                    </td>
-                                    <td className="px-3 py-3">
-                                        <StatusBadge value={post.status} />
-                                    </td>
-                                    <td className="px-3 py-3 text-crm-muted">
-                                        {post.author || '—'}
-                                    </td>
-                                    <td className="px-3 py-3 text-crm-muted">
-                                        {post.updated_at}
-                                    </td>
-                                    <td className="px-3 py-3 text-right">
-                                        <div className="flex justify-end gap-3">
-                                            {post.status === 'published' && (
-                                                <a
-                                                    href={route(
-                                                        'blog.show',
-                                                        post.slug,
-                                                    )}
-                                                    className="text-sm font-medium text-crm-muted hover:text-crm-primary"
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                >
-                                                    View
-                                                </a>
-                                            )}
-                                            <Link
-                                                href={route(
-                                                    'app.posts.edit',
-                                                    post.id,
-                                                )}
-                                                className="text-sm font-semibold text-crm-primary"
-                                            >
-                                                Edit
-                                            </Link>
-                                            <button
-                                                type="button"
-                                                onClick={() => destroy(post)}
-                                                className="text-sm font-medium text-red-600 hover:text-red-700"
-                                            >
-                                                Delete
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                        <input
+                            value={q}
+                            onChange={(e) => setQ(e.target.value)}
+                            placeholder="Search title or slug…"
+                            className="crm-input max-w-md"
+                        />
+                        <button type="submit" className="crm-btn-primary">
+                            Search
+                        </button>
+                    </form>
                 </div>
+
+                {posts.data.length === 0 ? (
+                    <div className="p-5">
+                        <div className="crm-empty">
+                            No posts yet.{' '}
+                            <Link
+                                href={route('app.posts.create')}
+                                className="font-semibold text-crm-primary"
+                            >
+                                Create your first guide article
+                            </Link>
+                            .
+                        </div>
+                    </div>
+                ) : (
+                    <div className="overflow-x-auto">
+                        <table className="crm-table min-w-full text-sm">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Status</th>
+                                    <th>Author</th>
+                                    <th>Updated</th>
+                                    <th className="text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {posts.data.map((post) => (
+                                    <tr key={post.id}>
+                                        <td>
+                                            <div className="flex items-center gap-3">
+                                                {post.cover_image_url ? (
+                                                    <img
+                                                        src={
+                                                            post.cover_image_url
+                                                        }
+                                                        alt=""
+                                                        className="h-11 w-14 rounded-lg object-cover"
+                                                    />
+                                                ) : (
+                                                    <div className="flex h-11 w-14 items-center justify-center rounded-lg bg-slate-100 text-[10px] font-semibold uppercase tracking-wide text-crm-muted">
+                                                        Post
+                                                    </div>
+                                                )}
+                                                <div>
+                                                    <Link
+                                                        href={route(
+                                                            'app.posts.edit',
+                                                            post.id,
+                                                        )}
+                                                        className="font-medium text-crm-heading hover:text-crm-primary"
+                                                    >
+                                                        {post.title}
+                                                    </Link>
+                                                    <p className="text-xs text-crm-muted">
+                                                        /blog/{post.slug}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <StatusBadge value={post.status} />
+                                        </td>
+                                        <td className="text-crm-muted">
+                                            {post.author || '—'}
+                                        </td>
+                                        <td className="text-crm-muted">
+                                            {post.updated_at}
+                                        </td>
+                                        <td>
+                                            <div className="flex justify-end gap-2">
+                                                {post.status ===
+                                                    'published' && (
+                                                    <a
+                                                        href={route(
+                                                            'blog.show',
+                                                            post.slug,
+                                                        )}
+                                                        className="rounded-lg px-2.5 py-1.5 text-sm font-medium text-crm-muted hover:bg-slate-50 hover:text-crm-primary"
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                    >
+                                                        View
+                                                    </a>
+                                                )}
+                                                <Link
+                                                    href={route(
+                                                        'app.posts.edit',
+                                                        post.id,
+                                                    )}
+                                                    className="rounded-lg px-2.5 py-1.5 text-sm font-semibold text-crm-primary hover:bg-sky-50"
+                                                >
+                                                    Edit
+                                                </Link>
+                                                <button
+                                                    type="button"
+                                                    onClick={() =>
+                                                        destroy(post)
+                                                    }
+                                                    className="rounded-lg px-2.5 py-1.5 text-sm font-medium text-rose-600 hover:bg-rose-50"
+                                                >
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
             </CrmCard>
         </AppLayout>
     );

@@ -17,77 +17,79 @@ export default function Index({ applicants, filters }) {
     };
 
     return (
-        <AppLayout title="Applicants">
+        <AppLayout title="Applicants" breadcrumbs={['Home', 'Applicants']}>
             <Head title="Applicants" />
-            <PageHeader title="Applicants" breadcrumbs={['Home', 'Applicants']} />
+            <PageHeader
+                title="Applicants"
+                subtitle="Search and open applicant profiles, progress, and tickets."
+            />
 
-            <CrmCard>
-                <form onSubmit={search} className="mb-4 flex gap-2">
-                    <input
-                        value={q}
-                        onChange={(e) => setQ(e.target.value)}
-                        placeholder="Search name or email…"
-                        className="w-full max-w-sm rounded-md border-crm text-sm"
-                    />
-                    <button
-                        type="submit"
-                        className="rounded-md bg-crm-primary px-4 py-2 text-sm font-semibold text-white"
+            <CrmCard padded={false}>
+                <div className="border-b border-crm px-5 py-4">
+                    <form
+                        onSubmit={search}
+                        className="flex flex-col gap-3 sm:flex-row sm:items-center"
                     >
-                        Search
-                    </button>
-                </form>
-
-                <div className="overflow-x-auto">
-                    <table className="min-w-full text-left text-sm">
-                        <thead className="bg-crm-canvas text-xs uppercase text-crm-muted">
-                            <tr>
-                                <th className="px-3 py-2 font-semibold">Applicant</th>
-                                <th className="px-3 py-2 font-semibold">Joined</th>
-                                <th className="px-3 py-2 font-semibold">Checklist</th>
-                                <th className="px-3 py-2 font-semibold">Open tickets</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-crm">
-                            {applicants.data.length === 0 && (
-                                <tr>
-                                    <td
-                                        colSpan={4}
-                                        className="px-3 py-6 text-crm-muted"
-                                    >
-                                        No applicants found.
-                                    </td>
-                                </tr>
-                            )}
-                            {applicants.data.map((user) => (
-                                <tr key={user.id} className="hover:bg-crm-canvas/50">
-                                    <td className="px-3 py-3">
-                                        <Link
-                                            href={route(
-                                                'app.applicants.show',
-                                                user.id,
-                                            )}
-                                            className="font-medium text-crm-heading hover:text-crm-primary"
-                                        >
-                                            {user.name}
-                                        </Link>
-                                        <p className="text-xs text-crm-muted">
-                                            {user.email}
-                                        </p>
-                                    </td>
-                                    <td className="px-3 py-3 text-crm-muted">
-                                        {user.created_at}
-                                    </td>
-                                    <td className="px-3 py-3 text-crm-muted">
-                                        {user.progress_done}/{user.progress_total}
-                                    </td>
-                                    <td className="px-3 py-3 text-crm-muted">
-                                        {user.open_tickets}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                        <input
+                            value={q}
+                            onChange={(e) => setQ(e.target.value)}
+                            placeholder="Search name or email…"
+                            className="crm-input max-w-md"
+                        />
+                        <button type="submit" className="crm-btn-primary">
+                            Search
+                        </button>
+                    </form>
                 </div>
+
+                {applicants.data.length === 0 ? (
+                    <div className="p-5">
+                        <div className="crm-empty">No applicants found.</div>
+                    </div>
+                ) : (
+                    <div className="overflow-x-auto">
+                        <table className="crm-table min-w-full text-sm">
+                            <thead>
+                                <tr>
+                                    <th>Applicant</th>
+                                    <th>Joined</th>
+                                    <th>Checklist</th>
+                                    <th>Open tickets</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {applicants.data.map((user) => (
+                                    <tr key={user.id}>
+                                        <td>
+                                            <Link
+                                                href={route(
+                                                    'app.applicants.show',
+                                                    user.id,
+                                                )}
+                                                className="font-medium text-crm-heading hover:text-crm-primary"
+                                            >
+                                                {user.name}
+                                            </Link>
+                                            <p className="text-xs text-crm-muted">
+                                                {user.email}
+                                            </p>
+                                        </td>
+                                        <td className="text-crm-muted">
+                                            {user.created_at}
+                                        </td>
+                                        <td className="text-crm-muted">
+                                            {user.progress_done}/
+                                            {user.progress_total}
+                                        </td>
+                                        <td className="text-crm-muted">
+                                            {user.open_tickets}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
             </CrmCard>
         </AppLayout>
     );

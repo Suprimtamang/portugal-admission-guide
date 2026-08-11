@@ -4,20 +4,21 @@ export default function CrmCard({
     title = null,
     action = null,
     id = undefined,
+    padded = true,
 }) {
     return (
-        <div id={id} className={`crm-card shadow-crm ${className}`}>
+        <div id={id} className={`crm-card ${className}`}>
             {(title || action) && (
-                <div className="flex items-center justify-between border-b border-crm px-5 py-4">
+                <div className="flex items-center justify-between gap-3 border-b border-crm px-5 py-4">
                     {title && (
-                        <h3 className="text-base font-semibold text-crm-heading">
+                        <h3 className="text-[15px] font-semibold tracking-tight text-crm-heading">
                             {title}
                         </h3>
                     )}
                     {action}
                 </div>
             )}
-            <div className="p-5">{children}</div>
+            <div className={padded ? 'p-5' : ''}>{children}</div>
         </div>
     );
 }

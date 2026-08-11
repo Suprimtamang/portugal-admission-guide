@@ -1,19 +1,26 @@
-export default function PageHeader({ title, breadcrumbs = [], action = null }) {
+export default function PageHeader({
+    title,
+    breadcrumbs = [],
+    action = null,
+    subtitle = null,
+}) {
     return (
-        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mb-7 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-                <div className="crm-page-title">
-                    <h1>{title}</h1>
-                </div>
                 {breadcrumbs.length > 0 && (
-                    <nav className="mt-1 flex flex-wrap items-center gap-1 text-xs text-crm-muted">
+                    <nav className="mb-2 flex flex-wrap items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.08em] text-crm-muted">
                         {breadcrumbs.map((crumb, index) => (
-                            <span key={`${crumb}-${index}`} className="flex items-center gap-1">
-                                {index > 0 && <span>/</span>}
+                            <span
+                                key={`${crumb}-${index}`}
+                                className="flex items-center gap-1.5"
+                            >
+                                {index > 0 && (
+                                    <span className="text-crm-border">/</span>
+                                )}
                                 <span
                                     className={
                                         index === breadcrumbs.length - 1
-                                            ? 'text-crm-heading'
+                                            ? 'text-crm-primary'
                                             : ''
                                     }
                                 >
@@ -23,8 +30,16 @@ export default function PageHeader({ title, breadcrumbs = [], action = null }) {
                         ))}
                     </nav>
                 )}
+                <div className="crm-page-title">
+                    <h1>{title}</h1>
+                </div>
+                {subtitle && (
+                    <p className="mt-1.5 max-w-2xl text-sm text-crm-muted">
+                        {subtitle}
+                    </p>
+                )}
             </div>
-            {action}
+            {action && <div className="flex flex-wrap items-center gap-2">{action}</div>}
         </div>
     );
 }

@@ -1,22 +1,22 @@
 const styles = {
-    open: 'bg-sky-50 text-crm-primary',
-    in_progress: 'bg-orange-50 text-crm-warning',
-    waiting_user: 'bg-violet-50 text-violet-600',
-    resolved: 'bg-emerald-50 text-crm-success',
-    closed: 'bg-gray-100 text-crm-muted',
-    high: 'bg-red-50 text-crm-danger',
-    normal: 'bg-sky-50 text-crm-primary',
-    low: 'bg-gray-100 text-crm-muted',
-    draft: 'bg-gray-100 text-crm-muted',
-    published: 'bg-emerald-50 text-crm-success',
+    open: 'bg-sky-50 text-sky-700 ring-sky-100',
+    in_progress: 'bg-amber-50 text-amber-700 ring-amber-100',
+    waiting_user: 'bg-violet-50 text-violet-700 ring-violet-100',
+    resolved: 'bg-emerald-50 text-emerald-700 ring-emerald-100',
+    closed: 'bg-slate-100 text-slate-600 ring-slate-200',
+    high: 'bg-rose-50 text-rose-700 ring-rose-100',
+    normal: 'bg-sky-50 text-sky-700 ring-sky-100',
+    low: 'bg-slate-100 text-slate-600 ring-slate-200',
+    draft: 'bg-slate-100 text-slate-600 ring-slate-200',
+    published: 'bg-emerald-50 text-emerald-700 ring-emerald-100',
 };
 
 export default function StatusBadge({ value }) {
     const key = String(value || '').toLowerCase();
     return (
         <span
-            className={`inline-flex rounded px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide ${
-                styles[key] || 'bg-gray-100 text-crm-muted'
+            className={`inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide ring-1 ring-inset ${
+                styles[key] || 'bg-slate-100 text-slate-600 ring-slate-200'
             }`}
         >
             {String(value || '').replaceAll('_', ' ')}

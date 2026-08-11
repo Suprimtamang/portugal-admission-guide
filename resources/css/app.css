@@ -5,13 +5,16 @@
 :root {
     --crm-primary: #0d99ff;
     --crm-primary-rgb: 13, 153, 255;
-    --crm-heading: #2c2c2c;
-    --crm-muted: #888888;
-    --crm-canvas: #f5f5f5;
-    --crm-border: #e6e6e6;
-    --crm-success: #3ac977;
-    --crm-danger: #ff5e5e;
-    --crm-warning: #ff9f00;
+    --crm-heading: #1a2332;
+    --crm-muted: #6b7785;
+    --crm-canvas: #eef2f6;
+    --crm-surface: #ffffff;
+    --crm-border: #dde3ea;
+    --crm-success: #22a06b;
+    --crm-danger: #e5484d;
+    --crm-warning: #e8a317;
+    --crm-sidebar: #0f1b2d;
+    --crm-sidebar-muted: #8b9bb0;
 }
 
 @layer base {
@@ -23,25 +26,83 @@
     }
 
     ::selection {
-        background: rgba(var(--crm-primary-rgb), 0.2);
+        background: rgba(var(--crm-primary-rgb), 0.22);
     }
 }
 
 @layer components {
+    .crm-shell {
+        background:
+            radial-gradient(1200px 500px at 12% -10%, rgba(13, 153, 255, 0.14), transparent 55%),
+            radial-gradient(900px 420px at 90% 0%, rgba(34, 160, 107, 0.08), transparent 50%),
+            linear-gradient(180deg, #f4f7fb 0%, var(--crm-canvas) 40%, #e8eef4 100%);
+        background-attachment: fixed;
+    }
+
     .crm-card {
-        @apply rounded-lg border bg-white shadow-sm;
+        @apply rounded-2xl border bg-white;
         border-color: var(--crm-border);
+        box-shadow:
+            0 1px 2px rgba(15, 27, 45, 0.04),
+            0 8px 24px rgba(15, 27, 45, 0.04);
     }
 
     .crm-stat-avatar {
-        @apply flex h-10 w-10 items-center justify-center rounded-full;
+        @apply flex h-11 w-11 items-center justify-center rounded-xl;
         background: rgba(var(--crm-primary-rgb), 0.12);
         color: var(--crm-primary);
     }
 
     .crm-page-title h1 {
-        @apply text-xl font-semibold;
+        @apply text-2xl font-semibold tracking-tight;
         color: var(--crm-heading);
+    }
+
+    .crm-btn-primary {
+        @apply inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold text-white transition;
+        background: linear-gradient(180deg, #2aadff 0%, var(--crm-primary) 100%);
+        box-shadow: 0 8px 18px rgba(13, 153, 255, 0.28);
+    }
+
+    .crm-btn-primary:hover {
+        filter: brightness(1.04);
+    }
+
+    .crm-input {
+        @apply w-full rounded-xl border bg-white px-3.5 py-2.5 text-sm outline-none transition;
+        border-color: var(--crm-border);
+        color: var(--crm-heading);
+    }
+
+    .crm-input:focus {
+        border-color: rgba(var(--crm-primary-rgb), 0.55);
+        box-shadow: 0 0 0 4px rgba(var(--crm-primary-rgb), 0.12);
+    }
+
+    .crm-table thead th {
+        @apply px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.08em];
+        color: var(--crm-muted);
+        background: #f7f9fc;
+    }
+
+    .crm-table tbody td {
+        @apply px-4 py-3.5 align-middle;
+    }
+
+    .crm-table tbody tr {
+        @apply border-t transition;
+        border-color: var(--crm-border);
+    }
+
+    .crm-table tbody tr:hover {
+        background: rgba(13, 153, 255, 0.03);
+    }
+
+    .crm-empty {
+        @apply rounded-xl border border-dashed px-6 py-10 text-center text-sm;
+        border-color: var(--crm-border);
+        color: var(--crm-muted);
+        background: #fafbfd;
     }
 
     .prose-editor p {
@@ -134,6 +195,11 @@
     }
     .bg-crm-primary\/10 {
         background-color: rgba(var(--crm-primary-rgb), 0.1);
+    }
+    .shadow-crm {
+        box-shadow:
+            0 1px 2px rgba(15, 27, 45, 0.04),
+            0 8px 24px rgba(15, 27, 45, 0.04);
     }
 }
 
