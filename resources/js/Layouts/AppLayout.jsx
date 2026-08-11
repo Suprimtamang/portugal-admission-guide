@@ -37,6 +37,7 @@ export default function AppLayout({ title, breadcrumbs = [], children }) {
     const adminPrimary = [
         { name: 'Desk', href: 'app.dashboard', match: 'app.dashboard' },
         { name: 'Applicants', href: 'app.applicants.index', match: 'app.applicants.*' },
+        { name: 'Posts', href: 'app.posts.index', match: 'app.posts.*' },
         { name: 'Support', href: 'app.support.index', match: 'app.support.*' },
         ...(canManageAdmins
             ? [{ name: 'Admins', href: 'app.admins.index', match: 'app.admins.*' }]
@@ -106,17 +107,6 @@ export default function AppLayout({ title, breadcrumbs = [], children }) {
                                         </NavItem>
                                     ))}
                                 </div>
-                            </div>
-                            <div>
-                                <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-wider text-crm-muted">
-                                    CMS
-                                </p>
-                                <a
-                                    href="/admin"
-                                    className="flex items-center rounded-md px-3 py-2.5 text-sm font-medium text-crm-muted hover:bg-white hover:text-crm-heading"
-                                >
-                                    Blog CMS
-                                </a>
                             </div>
                         </>
                     ) : (

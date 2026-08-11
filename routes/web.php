@@ -7,6 +7,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\RoadmapController;
@@ -47,6 +48,13 @@ Route::middleware(['auth'])->prefix('app')->name('app.')->group(function () {
         Route::get('/applicants/{user}', [ApplicantController::class, 'show'])->name('applicants.show');
         Route::get('/admins', [AdminUserController::class, 'index'])->name('admins.index');
         Route::patch('/admins/{user}', [AdminUserController::class, 'update'])->name('admins.update');
+
+        Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+        Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
+        Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
+        Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
+        Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
+        Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
     });
 });
 

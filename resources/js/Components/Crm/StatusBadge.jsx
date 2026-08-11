@@ -7,6 +7,8 @@ const styles = {
     high: 'bg-red-50 text-crm-danger',
     normal: 'bg-sky-50 text-crm-primary',
     low: 'bg-gray-100 text-crm-muted',
+    draft: 'bg-gray-100 text-crm-muted',
+    published: 'bg-emerald-50 text-crm-success',
 };
 
 export default function StatusBadge({ value }) {
