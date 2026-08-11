@@ -57,6 +57,4 @@ Default seeded user (if you ran full seed): `test@example.com` / `password`
 - Agent answers from certified DGES/DGE/AIMA/gov/uni chunks with citations
 - `php artisan knowledge:ingest` refreshes curated knowledge corpus
 
-## Privacy / commits
 
-Do not commit `.env`. Keep Cursor attribution disabled when pushing.
