@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --crm-primary: #0d99ff;
+    --crm-primary-rgb: 13, 153, 255;
+    --crm-heading: #2c2c2c;
+    --crm-muted: #888888;
+    --crm-canvas: #f5f5f5;
+    --crm-border: #e6e6e6;
+    --crm-success: #3ac977;
+    --crm-danger: #ff5e5e;
+    --crm-warning: #ff9f00;
+}
+
+@layer base {
+    body {
+        color: var(--crm-heading);
+        background-color: var(--crm-canvas);
+        font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+        font-size: 0.875rem;
+    }
+
+    ::selection {
+        background: rgba(var(--crm-primary-rgb), 0.2);
+    }
+}
+
+@layer components {
+    .crm-card {
+        @apply rounded-lg border bg-white shadow-sm;
+        border-color: var(--crm-border);
+    }
+
+    .crm-stat-avatar {
+        @apply flex h-10 w-10 items-center justify-center rounded-full;
+        background: rgba(var(--crm-primary-rgb), 0.12);
+        color: var(--crm-primary);
+    }
+
+    .crm-page-title h1 {
+        @apply text-xl font-semibold;
+        color: var(--crm-heading);
+    }
+}
+
+@layer utilities {
+    .text-crm-primary {
+        color: var(--crm-primary);
+    }
+    .text-crm-heading {
+        color: var(--crm-heading);
+    }
+    .text-crm-muted {
+        color: var(--crm-muted);
+    }
+    .bg-crm-primary {
+        background-color: var(--crm-primary);
+    }
+    .bg-crm-canvas {
+        background-color: var(--crm-canvas);
+    }
+    .border-crm {
+        border-color: var(--crm-border);
+    }
+    .bg-crm-primary\/10 {
+        background-color: rgba(var(--crm-primary-rgb), 0.1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
