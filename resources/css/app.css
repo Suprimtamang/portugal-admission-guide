@@ -1,0 +1,214 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --crm-primary: #0d99ff;
+    --crm-primary-rgb: 13, 153, 255;
+    --crm-heading: #1a2332;
+    --crm-muted: #6b7785;
+    --crm-canvas: #eef2f6;
+    --crm-surface: #ffffff;
+    --crm-border: #dde3ea;
+    --crm-success: #22a06b;
+    --crm-danger: #e5484d;
+    --crm-warning: #e8a317;
+    --crm-sidebar: #0f1b2d;
+    --crm-sidebar-muted: #8b9bb0;
+}
+
+@layer base {
+    body {
+        color: var(--crm-heading);
+        background-color: var(--crm-canvas);
+        font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+        font-size: 0.875rem;
+    }
+
+    ::selection {
+        background: rgba(var(--crm-primary-rgb), 0.22);
+    }
+}
+
+@layer components {
+    .crm-shell {
+        background:
+            radial-gradient(1200px 500px at 12% -10%, rgba(13, 153, 255, 0.14), transparent 55%),
+            radial-gradient(900px 420px at 90% 0%, rgba(34, 160, 107, 0.08), transparent 50%),
+            linear-gradient(180deg, #f4f7fb 0%, var(--crm-canvas) 40%, #e8eef4 100%);
+        background-attachment: fixed;
+    }
+
+    .crm-card {
+        @apply rounded-2xl border bg-white;
+        border-color: var(--crm-border);
+        box-shadow:
+            0 1px 2px rgba(15, 27, 45, 0.04),
+            0 8px 24px rgba(15, 27, 45, 0.04);
+    }
+
+    .crm-stat-avatar {
+        @apply flex h-11 w-11 items-center justify-center rounded-xl;
+        background: rgba(var(--crm-primary-rgb), 0.12);
+        color: var(--crm-primary);
+    }
+
+    .crm-page-title h1 {
+        @apply text-2xl font-semibold tracking-tight;
+        color: var(--crm-heading);
+    }
+
+    .crm-btn-primary {
+        @apply inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold text-white transition;
+        background: linear-gradient(180deg, #2aadff 0%, var(--crm-primary) 100%);
+        box-shadow: 0 8px 18px rgba(13, 153, 255, 0.28);
+    }
+
+    .crm-btn-primary:hover {
+        filter: brightness(1.04);
+    }
+
+    .crm-input {
+        @apply w-full rounded-xl border bg-white px-3.5 py-2.5 text-sm outline-none transition;
+        border-color: var(--crm-border);
+        color: var(--crm-heading);
+    }
+
+    .crm-input:focus {
+        border-color: rgba(var(--crm-primary-rgb), 0.55);
+        box-shadow: 0 0 0 4px rgba(var(--crm-primary-rgb), 0.12);
+    }
+
+    .crm-table thead th {
+        @apply px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.08em];
+        color: var(--crm-muted);
+        background: #f7f9fc;
+    }
+
+    .crm-table tbody td {
+        @apply px-4 py-3.5 align-middle;
+    }
+
+    .crm-table tbody tr {
+        @apply border-t transition;
+        border-color: var(--crm-border);
+    }
+
+    .crm-table tbody tr:hover {
+        background: rgba(13, 153, 255, 0.03);
+    }
+
+    .crm-empty {
+        @apply rounded-xl border border-dashed px-6 py-10 text-center text-sm;
+        border-color: var(--crm-border);
+        color: var(--crm-muted);
+        background: #fafbfd;
+    }
+
+    .prose-editor p {
+        @apply mb-3 text-sm leading-7 text-crm-heading;
+    }
+
+    .prose-editor h2 {
+        @apply mb-3 mt-5 text-xl font-semibold text-crm-heading;
+    }
+
+    .prose-editor h3 {
+        @apply mb-2 mt-4 text-lg font-semibold text-crm-heading;
+    }
+
+    .prose-editor ul {
+        @apply mb-3 list-disc pl-5 text-sm leading-7;
+    }
+
+    .prose-editor ol {
+        @apply mb-3 list-decimal pl-5 text-sm leading-7;
+    }
+
+    .prose-editor blockquote {
+        @apply my-3 border-l-4 border-crm-primary/40 pl-4 italic text-crm-muted;
+    }
+
+    .prose-editor a {
+        @apply text-crm-primary underline;
+    }
+
+    .prose-editor p.is-editor-empty:first-child::before {
+        color: var(--crm-muted);
+        content: attr(data-placeholder);
+        float: left;
+        height: 0;
+        pointer-events: none;
+    }
+
+    .post-content {
+        @apply text-base leading-8 text-crm-heading;
+    }
+
+    .post-content p {
+        @apply mb-4;
+    }
+
+    .post-content h2 {
+        @apply mb-3 mt-8 text-2xl font-semibold;
+    }
+
+    .post-content h3 {
+        @apply mb-2 mt-6 text-xl font-semibold;
+    }
+
+    .post-content ul {
+        @apply mb-4 list-disc pl-6;
+    }
+
+    .post-content ol {
+        @apply mb-4 list-decimal pl-6;
+    }
+
+    .post-content blockquote {
+        @apply my-4 border-l-4 border-crm-primary/40 pl-4 italic text-crm-muted;
+    }
+
+    .post-content a {
+        @apply text-crm-primary underline;
+    }
+}
+
+@layer utilities {
+    .text-crm-primary {
+        color: var(--crm-primary);
+    }
+    .text-crm-heading {
+        color: var(--crm-heading);
+    }
+    .text-crm-muted {
+        color: var(--crm-muted);
+    }
+    .bg-crm-primary {
+        background-color: var(--crm-primary);
+    }
+    .bg-crm-canvas {
+        background-color: var(--crm-canvas);
+    }
+    .border-crm {
+        border-color: var(--crm-border);
+    }
+    .bg-crm-primary\/10 {
+        background-color: rgba(var(--crm-primary-rgb), 0.1);
+    }
+    .shadow-crm {
+        box-shadow:
+            0 1px 2px rgba(15, 27, 45, 0.04),
+            0 8px 24px rgba(15, 27, 45, 0.04);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
