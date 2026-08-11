@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AimaGuideController;
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\BlogController;
@@ -44,6 +45,8 @@ Route::middleware(['auth'])->prefix('app')->name('app.')->group(function () {
     Route::middleware('role:superadmin')->group(function () {
         Route::get('/applicants', [ApplicantController::class, 'index'])->name('applicants.index');
         Route::get('/applicants/{user}', [ApplicantController::class, 'show'])->name('applicants.show');
+        Route::get('/admins', [AdminUserController::class, 'index'])->name('admins.index');
+        Route::patch('/admins/{user}', [AdminUserController::class, 'update'])->name('admins.update');
     });
 });
 

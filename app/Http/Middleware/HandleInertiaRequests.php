@@ -40,6 +40,7 @@ class HandleInertiaRequests extends Middleware
                         'name' => $user->name,
                         'email' => $user->email,
                         'role' => $user->role?->value ?? 'user',
+                        'can_manage_admins' => $user->canManageAdmins(),
                     ]
                     : null,
             ],

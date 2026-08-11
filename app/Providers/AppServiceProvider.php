@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\SupportTicket;
+use App\Models\User;
 use App\Policies\SupportTicketPolicy;
+use App\Policies\UserPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -19,5 +21,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Vite::prefetch(concurrency: 3);
         Gate::policy(SupportTicket::class, SupportTicketPolicy::class);
+        Gate::policy(User::class, UserPolicy::class);
     }
 }

@@ -41,6 +41,14 @@ class UserFactory extends Factory
         ]);
     }
 
+    public function owner(): static
+    {
+        return $this->superadmin()->state(fn (array $attributes) => [
+            'email' => config('rbac.owner_email'),
+            'name' => 'App Owner',
+        ]);
+    }
+
     /**
      * Indicate that the model's email address should be unverified.
      */

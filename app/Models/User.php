@@ -40,6 +40,24 @@ class User extends Authenticatable implements FilamentUser
         return $this->role === UserRole::User;
     }
 
+    public function isOwner(): bool
+    {
+        $ownerEmail = strtolower((string) config('rbac.owner_email'));
+
+        return $ownerEmail !== ''
+            && strtolower((string) $this->email) === $ownerEmail;
+    }
+
+    public function canManageAdmins(): bool
+    {
+        return $this->isOwner() && $this->isSuperAdmin();
+    }
+
+    public function assignRole(UserRole $role): void
+    {
+        $this->forceFill(['role' => $role])->save();
+    }
+
     public function progress(): HasMany
     {
         return $this->hasMany(UserProgress::class);

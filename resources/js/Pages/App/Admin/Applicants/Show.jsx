@@ -2,9 +2,18 @@ import AppLayout from '@/Layouts/AppLayout';
 import CrmCard from '@/Components/Crm/CrmCard';
 import PageHeader from '@/Components/Crm/PageHeader';
 import StatusBadge from '@/Components/Crm/StatusBadge';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 
-export default function Show({ applicant, tickets }) {
+export default function Show({ applicant, tickets, canPromote = false }) {
+    const promote = () => {
+        if (!confirm(`Make ${applicant.name} a superadmin?`)) {
+            return;
+        }
+        router.patch(route('app.admins.update', applicant.id), {
+            role: 'superadmin',
+        });
+    };
+
     return (
         <AppLayout title={applicant.name}>
             <Head title={applicant.name} />
@@ -12,12 +21,23 @@ export default function Show({ applicant, tickets }) {
                 title={applicant.name}
                 breadcrumbs={['Home', 'Applicants', applicant.name]}
                 action={
-                    <Link
-                        href={route('app.applicants.index')}
-                        className="text-sm font-semibold text-crm-primary"
-                    >
-                        ← All applicants
-                    </Link>
+                    <div className="flex flex-wrap items-center gap-3">
+                        {canPromote && (
+                            <button
+                                type="button"
+                                onClick={promote}
+                                className="rounded-md bg-crm-primary px-3 py-1.5 text-sm font-semibold text-white"
+                            >
+                                Make admin
+                            </button>
+                        )}
+                        <Link
+                            href={route('app.applicants.index')}
+                            className="text-sm font-semibold text-crm-primary"
+                        >
+                            ← All applicants
+                        </Link>
+                    </div>
                 }
             />
 

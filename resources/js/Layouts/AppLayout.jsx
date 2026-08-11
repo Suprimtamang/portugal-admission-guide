@@ -19,6 +19,7 @@ function NavItem({ href, active, children }) {
 export default function AppLayout({ title, breadcrumbs = [], children }) {
     const { auth } = usePage().props;
     const isSuper = auth.user?.role === 'superadmin';
+    const canManageAdmins = Boolean(auth.user?.can_manage_admins);
     const [open, setOpen] = useState(false);
 
     const guideItems = [
@@ -37,6 +38,9 @@ export default function AppLayout({ title, breadcrumbs = [], children }) {
         { name: 'Desk', href: 'app.dashboard', match: 'app.dashboard' },
         { name: 'Applicants', href: 'app.applicants.index', match: 'app.applicants.*' },
         { name: 'Support', href: 'app.support.index', match: 'app.support.*' },
+        ...(canManageAdmins
+            ? [{ name: 'Admins', href: 'app.admins.index', match: 'app.admins.*' }]
+            : []),
     ];
 
     return (

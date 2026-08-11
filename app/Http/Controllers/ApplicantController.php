@@ -52,7 +52,7 @@ class ApplicantController extends Controller
         ]);
     }
 
-    public function show(User $user): Response
+    public function show(Request $request, User $user): Response
     {
         abort_unless($user->isApplicant(), 404);
 
@@ -85,6 +85,7 @@ class ApplicantController extends Controller
                 'progress_total' => $checklistTotal,
             ],
             'tickets' => $tickets,
+            'canPromote' => $request->user()?->canManageAdmins() ?? false,
         ]);
     }
 }

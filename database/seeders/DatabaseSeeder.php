@@ -17,6 +17,17 @@ class DatabaseSeeder extends Seeder
         $this->call(RoadmapSeeder::class);
         $this->call(KnowledgeSeeder::class);
 
+        $ownerEmail = (string) config('rbac.owner_email');
+
+        $owner = User::query()->firstOrCreate(
+            ['email' => $ownerEmail],
+            [
+                'name' => 'Max Pal',
+                'password' => Hash::make('password'),
+            ],
+        );
+        $owner->assignRole(UserRole::Superadmin);
+
         User::query()->updateOrCreate(
             ['email' => 'test@example.com'],
             [
