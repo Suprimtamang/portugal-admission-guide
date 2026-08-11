@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -32,6 +33,8 @@ class PostController extends Controller
                 'title' => $post->title,
                 'slug' => $post->slug,
                 'status' => $post->status,
+                'seo_title' => $post->meta_title ?: $post->title,
+                'cover_image_url' => $this->coverUrl($post),
                 'published_at' => $post->published_at?->toDateTimeString(),
                 'author' => $post->author?->name,
                 'updated_at' => $post->updated_at?->toDateString(),
@@ -55,6 +58,7 @@ class PostController extends Controller
         $data = $this->validated($request);
         $data['user_id'] = $request->user()->id;
         $data = $this->normalizePublishState($data);
+        $data = $this->applyCoverImage($request, $data);
 
         Post::query()->create($data);
 
@@ -74,6 +78,10 @@ class PostController extends Controller
                 'body' => $post->body,
                 'status' => $post->status,
                 'published_at' => $post->published_at?->format('Y-m-d\TH:i'),
+                'meta_title' => $post->meta_title ?? '',
+                'meta_description' => $post->meta_description ?? '',
+                'focus_keyword' => $post->focus_keyword ?? '',
+                'cover_image_url' => $this->coverUrl($post),
             ],
         ]);
     }
@@ -82,6 +90,7 @@ class PostController extends Controller
     {
         $data = $this->validated($request, $post);
         $data = $this->normalizePublishState($data);
+        $data = $this->applyCoverImage($request, $data, $post);
 
         $post->update($data);
 
@@ -92,6 +101,10 @@ class PostController extends Controller
 
     public function destroy(Post $post): RedirectResponse
     {
+        if ($post->cover_image) {
+            Storage::disk('public')->delete($post->cover_image);
+        }
+
         $post->delete();
 
         return redirect()
@@ -111,6 +124,11 @@ class PostController extends Controller
             'body' => ['required', 'string'],
             'status' => ['required', Rule::in(['draft', 'published'])],
             'published_at' => ['nullable', 'date'],
+            'meta_title' => ['nullable', 'string', 'max:70'],
+            'meta_description' => ['nullable', 'string', 'max:180'],
+            'focus_keyword' => ['nullable', 'string', 'max:100'],
+            'cover_image' => ['nullable', 'image', 'max:4096'],
+            'remove_cover_image' => ['nullable', 'boolean'],
         ]);
 
         $slug = filled($validated['slug'] ?? null)
@@ -129,6 +147,7 @@ class PostController extends Controller
         ]);
 
         $validated['slug'] = $slug;
+        unset($validated['cover_image'], $validated['remove_cover_image']);
 
         return $validated;
     }
@@ -148,5 +167,36 @@ class PostController extends Controller
         }
 
         return $data;
+    }
+
+    /**
+     * @param  array<string, mixed>  $data
+     * @return array<string, mixed>
+     */
+    private function applyCoverImage(Request $request, array $data, ?Post $post = null): array
+    {
+        if ($request->boolean('remove_cover_image') && $post?->cover_image) {
+            Storage::disk('public')->delete($post->cover_image);
+            $data['cover_image'] = null;
+        }
+
+        if ($request->hasFile('cover_image')) {
+            if ($post?->cover_image) {
+                Storage::disk('public')->delete($post->cover_image);
+            }
+
+            $data['cover_image'] = $request->file('cover_image')->store('posts', 'public');
+        }
+
+        return $data;
+    }
+
+    private function coverUrl(Post $post): ?string
+    {
+        if (! $post->cover_image) {
+            return null;
+        }
+
+        return Storage::disk('public')->url($post->cover_image);
     }
 }

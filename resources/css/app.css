@@ -43,6 +43,74 @@
         @apply text-xl font-semibold;
         color: var(--crm-heading);
     }
+
+    .prose-editor p {
+        @apply mb-3 text-sm leading-7 text-crm-heading;
+    }
+
+    .prose-editor h2 {
+        @apply mb-3 mt-5 text-xl font-semibold text-crm-heading;
+    }
+
+    .prose-editor h3 {
+        @apply mb-2 mt-4 text-lg font-semibold text-crm-heading;
+    }
+
+    .prose-editor ul {
+        @apply mb-3 list-disc pl-5 text-sm leading-7;
+    }
+
+    .prose-editor ol {
+        @apply mb-3 list-decimal pl-5 text-sm leading-7;
+    }
+
+    .prose-editor blockquote {
+        @apply my-3 border-l-4 border-crm-primary/40 pl-4 italic text-crm-muted;
+    }
+
+    .prose-editor a {
+        @apply text-crm-primary underline;
+    }
+
+    .prose-editor p.is-editor-empty:first-child::before {
+        color: var(--crm-muted);
+        content: attr(data-placeholder);
+        float: left;
+        height: 0;
+        pointer-events: none;
+    }
+
+    .post-content {
+        @apply text-base leading-8 text-crm-heading;
+    }
+
+    .post-content p {
+        @apply mb-4;
+    }
+
+    .post-content h2 {
+        @apply mb-3 mt-8 text-2xl font-semibold;
+    }
+
+    .post-content h3 {
+        @apply mb-2 mt-6 text-xl font-semibold;
+    }
+
+    .post-content ul {
+        @apply mb-4 list-disc pl-6;
+    }
+
+    .post-content ol {
+        @apply mb-4 list-decimal pl-6;
+    }
+
+    .post-content blockquote {
+        @apply my-4 border-l-4 border-crm-primary/40 pl-4 italic text-crm-muted;
+    }
+
+    .post-content a {
+        @apply text-crm-primary underline;
+    }
 }
 
 @layer utilities {

@@ -18,19 +18,23 @@ class PostManagementTest extends TestCase
 
         $this->actingAs($admin)
             ->post(route('app.posts.store'), [
-                'title' => 'GAES password tips',
+                'title' => 'GAES password tips for Portugal students',
                 'slug' => '',
-                'excerpt' => 'Short overview',
-                'body' => 'Confirm details on the official portal.',
+                'excerpt' => 'Short overview for applicants preparing GAES accounts.',
+                'body' => '<p>Confirm details on the official portal and keep documents ready.</p>',
                 'status' => 'published',
                 'published_at' => null,
+                'meta_title' => 'GAES password tips for Portugal national students',
+                'meta_description' => 'Practical tips for creating and recovering GAES passwords while applying as a national student in Portugal.',
+                'focus_keyword' => 'gaes password',
             ])
             ->assertRedirect(route('app.posts.index'));
 
         $post = Post::query()->first();
         $this->assertNotNull($post);
-        $this->assertSame('gaes-password-tips', $post->slug);
+        $this->assertSame('gaes-password-tips-for-portugal-students', $post->slug);
         $this->assertSame('published', $post->status);
+        $this->assertSame('gaes password', $post->focus_keyword);
         $this->assertNotNull($post->published_at);
         $this->assertSame($admin->id, $post->user_id);
 
@@ -41,7 +45,11 @@ class PostManagementTest extends TestCase
                 ->component('App/Admin/Posts/Index')
                 ->has('posts.data', 1));
 
-        $this->get(route('blog.show', $post->slug))->assertOk();
+        $this->get(route('blog.show', $post->slug))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->component('Blog/Show')
+                ->where('post.seo.title', 'GAES password tips for Portugal national students'));
     }
 
     public function test_superadmin_can_update_and_delete_posts(): void

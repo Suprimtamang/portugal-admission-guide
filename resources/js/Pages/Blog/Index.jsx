@@ -9,7 +9,10 @@ export default function Index({ posts }) {
                     <Link href="/" className="font-semibold">
                         PAG <span className="text-crm-primary">Guide</span>
                     </Link>
-                    <Link href={route('login')} className="text-sm text-crm-muted hover:text-crm-primary">
+                    <Link
+                        href={route('login')}
+                        className="text-sm text-crm-muted hover:text-crm-primary"
+                    >
                         Log in
                     </Link>
                 </div>
@@ -26,17 +29,35 @@ export default function Index({ posts }) {
                         </li>
                     )}
                     {posts.map((post) => (
-                        <li key={post.id} className="crm-card shadow-crm p-6">
-                            <p className="text-xs text-crm-muted">{post.published_at}</p>
-                            <Link
-                                href={route('blog.show', post.slug)}
-                                className="mt-2 block text-xl font-semibold hover:text-crm-primary"
-                            >
-                                {post.title}
-                            </Link>
-                            {post.excerpt && (
-                                <p className="mt-2 text-sm text-crm-muted">{post.excerpt}</p>
+                        <li
+                            key={post.id}
+                            className="crm-card shadow-crm overflow-hidden"
+                        >
+                            {post.cover_image_url && (
+                                <Link href={route('blog.show', post.slug)}>
+                                    <img
+                                        src={post.cover_image_url}
+                                        alt=""
+                                        className="h-44 w-full object-cover"
+                                    />
+                                </Link>
                             )}
+                            <div className="p-6">
+                                <p className="text-xs text-crm-muted">
+                                    {post.published_at}
+                                </p>
+                                <Link
+                                    href={route('blog.show', post.slug)}
+                                    className="mt-2 block text-xl font-semibold hover:text-crm-primary"
+                                >
+                                    {post.title}
+                                </Link>
+                                {post.excerpt && (
+                                    <p className="mt-2 text-sm text-crm-muted">
+                                        {post.excerpt}
+                                    </p>
+                                )}
+                            </div>
                         </li>
                     ))}
                 </ul>

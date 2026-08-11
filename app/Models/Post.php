@@ -16,6 +16,9 @@ class Post extends Model
         'excerpt',
         'body',
         'cover_image',
+        'meta_title',
+        'meta_description',
+        'focus_keyword',
         'status',
         'published_at',
     ];
